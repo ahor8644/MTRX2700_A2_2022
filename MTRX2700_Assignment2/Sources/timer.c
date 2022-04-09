@@ -4,7 +4,7 @@
 
 
 
-//initialising timer and output compare
+//initialising timer and output compare for CH7
 void init_TC7(void){
   
   TSCR1_TEN = 1;      //enable the timer 
@@ -17,8 +17,5 @@ void init_TC7(void){
   
   //Setting output compare for TC7
   TIOS_IOS7 = 1;      // Output compare for ch7
-  
-  //Output compare interrupt enable:
-  TIE_C7I = 1;
  
 }

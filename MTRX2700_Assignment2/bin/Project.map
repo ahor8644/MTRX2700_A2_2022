@@ -25,6 +25,7 @@ isr_vectors.c.o                         Model: BANKED,        Lang: ANSI-C
 serial.c.o                              Model: BANKED,        Lang: ANSI-C
 command_parsing.c.o                     Model: BANKED,        Lang: ANSI-C
 functions.c.o                           Model: BANKED,        Lang: ANSI-C
+timer.c.o                               Model: BANKED,        Lang: ANSI-C
 
 *********************************************************************************************
 STARTUP SECTION
@@ -46,7 +47,7 @@ Section Name                    Size  Type     From       To       Segment
 .rodata1                         298     R     0xC015     0xC13E   ROM_C000
 NON_BANKED                       343     R     0xC13F     0xC295   ROM_C000
 .copy                             18     R     0xC296     0xC2A7   ROM_C000
-.text                           2273     R   0x308000   0x3088E0   PAGE_30
+.text                           2297     R   0x308000   0x3088F8   PAGE_30
 .stack                          1024   R/W     0x1000     0x13FF   RAM
 .data                             13   R/W     0x1400     0x140C   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
@@ -392,12 +393,12 @@ NON_BANKED                       343     R     0xC13F     0xC295   ROM_C000
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg340
 .abs_section_ff80                126     R     0xFF80     0xFFFD   .absSeg341
 .bss                              13   R/W     0x140D     0x1419   RAM
-.common                          514   R/W     0x141A     0x161B   RAM
-HEAP_SEGMENT                    2000   R/W     0x161C     0x1DEB   RAM
+HEAP_SEGMENT                    2000   R/W     0x141A     0x1BE9   RAM
+.common                          514   R/W     0x1BEA     0x1DEB   RAM
 .vectSeg342_vect                   2     R     0xFFFE     0xFFFF   .vectSeg342
 
 Summary of section sizes per section type:
-READ_ONLY (R):         C09 (dec:     3081)
+READ_ONLY (R):         C21 (dec:     3105)
 READ_WRITE (R/W):      DEC (dec:     3564)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -451,18 +452,18 @@ MODULE:                 -- mc9s12dg256.c.o --
      _RTICTL                                     3B       1       1       0   .abs_section_3b
      _COPCTL                                     3C       1       1       1   .abs_section_3c
      _ARMCOP                                     3F       1       1       0   .abs_section_3f
-     _TIOS                                       40       1       1       0   .abs_section_40
+     _TIOS                                       40       1       1       1   .abs_section_40
      _CFORC                                      41       1       1       0   .abs_section_41
      _OC7M                                       42       1       1       0   .abs_section_42
      _OC7D                                       43       1       1       0   .abs_section_43
-     _TSCR1                                      46       1       1       0   .abs_section_46
+     _TSCR1                                      46       1       1       2   .abs_section_46
      _TTOV                                       47       1       1       0   .abs_section_47
      _TCTL1                                      48       1       1       0   .abs_section_48
      _TCTL2                                      49       1       1       0   .abs_section_49
      _TCTL3                                      4A       1       1       0   .abs_section_4a
      _TCTL4                                      4B       1       1       0   .abs_section_4b
      _TIE                                        4C       1       1       0   .abs_section_4c
-     _TSCR2                                      4D       1       1       0   .abs_section_4d
+     _TSCR2                                      4D       1       1       3   .abs_section_4d
      _TFLG1                                      4E       1       1       0   .abs_section_4e
      _TFLG2                                      4F       1       1       0   .abs_section_4f
      _PACTL                                      60       1       1       0   .abs_section_60
@@ -757,14 +758,14 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                    308000      74     116       2   .text       
+     main                                    308000      79     121       2   .text       
 - VARIABLES:
      sci_port                                  1400       C      12       6   .data       
      read_end_char                             140C       1       1       2   .data       
      write_end_char                            140D       1       1       2   .bss        
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
-     Init                                    308074      29      41       2   .text       
+     Init                                    308079      29      41       2   .text       
      _Startup                                  C000       B      11       0   .init       
 - VARIABLES:
      _startupData                              C00B       6       6       3   .startData  
@@ -772,33 +773,33 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                          1400       0       0       1               
 MODULE:                 -- CTYPE.C.o (ansibi.lib) --
 - PROCEDURES:
-     isdigit                                 30809D       E      14       2   .text       
-     isspace                                 3080AB      17      23       4   .text       
-     toupper                                 3080C2      14      20       4   .text       
+     isdigit                                 3080A2       E      14       2   .text       
+     isspace                                 3080B0      17      23       4   .text       
+     toupper                                 3080C7      14      20       4   .text       
 - VARIABLES:
 MODULE:                 -- HEAP.C.o (ansibi.lib) --
 - PROCEDURES:
-     _heapcrash_                             3080D6       C      12       6   .text       
+     _heapcrash_                             3080DB       C      12       6   .text       
 - VARIABLES:
-     _heap_                                    161C     7D0    2000       2   HEAP_SEGMENT
+     _heap_                                    141A     7D0    2000       2   HEAP_SEGMENT
 MODULE:                 -- STDLIB.C.o (ansibi.lib) --
 - PROCEDURES:
-     CheckCharWithBase                       3080E2      3A      58       2   .text       
-     _strtoul                                30811C     173     371      11   .text       
-     _strtol                                 30828F      D6     214       4   .text       
-     strtol                                  308365      14      20       4   .text       
+     CheckCharWithBase                       3080E7      3A      58       2   .text       
+     _strtoul                                308121     173     371      11   .text       
+     _strtol                                 308294      D6     214       4   .text       
+     strtol                                  30836A      14      20       4   .text       
 - VARIABLES:
 MODULE:                 -- STRING.C.o (ansibi.lib) --
 - PROCEDURES:
-     strlen                                  308379      14      20      14   .text       
-     strcpy                                  30838D       D      13       2   .text       
-     strtok                                  30839A      5E      94       4   .text       
+     strlen                                  30837E      14      20      14   .text       
+     strcpy                                  308392       D      13       2   .text       
+     strtok                                  30839F      5E      94       4   .text       
 - VARIABLES:
      next.2                                    140E       2       2       9   .bss        
 MODULE:                 -- ALLOC.C.o (ansibi.lib) --
 - PROCEDURES:
-     malloc                                  3083F8      A7     167       4   .text       
-     free                                    30849F      C6     198       3   .text       
+     malloc                                  3083FD      A7     167       4   .text       
+     free                                    3084A4      C6     198       3   .text       
 - VARIABLES:
      heap_end                                  1410       2       2       3   .bss        
      free_ptr                                  1412       2       2       8   .bss        
@@ -812,7 +813,7 @@ MODULE:                 -- rtshc12.c.o (ansibi.lib) --
      _ILSEXT                                   C24C       7       7       2   NON_BANKED  
      _CASE_CHECKED_BYTE                        C253      14      20       1   NON_BANKED  
 - VARIABLES:
-     errno                                     141A       2       2       2   .common     
+     errno                                     1BEA       2       2       2   .common     
 MODULE:                 -- isr_vectors.c.o --
 - PROCEDURES:
      UnimplementedISR                          C267       2       2      61   NON_BANKED  
@@ -820,24 +821,24 @@ MODULE:                 -- isr_vectors.c.o --
      _vect                                     FF80      7E     126       0   .abs_section_ff80
 MODULE:                 -- serial.c.o --
 - PROCEDURES:
-     SerialInitialise                        308565      42      66       2   .text       
-     read_interrupt_init                     3085A7       8       8       2   .text       
-     SCI_read_char                           3085AF      3E      62       2   .text       
-     get_new_command                         3085ED      17      23       2   .text       
-     print_to_serial                         308604      21      33      16   .text       
-     SCI_write_char                          308625      32      50       2   .text       
+     SerialInitialise                        30856A      42      66       2   .text       
+     read_interrupt_init                     3085AC       8       8       2   .text       
+     SCI_read_char                           3085B4      3E      62       2   .text       
+     get_new_command                         3085F2      17      23       2   .text       
+     print_to_serial                         308609      21      33      16   .text       
+     SCI_write_char                          30862A      32      50       2   .text       
      serial_ISR                                C269      2D      45       2   NON_BANKED  
 - VARIABLES:
      string_ready                              1414       2       2       3   .bss        
      index.1                                   1416       2       2       5   .bss        
      write_index.2                             1418       2       2       4   .bss        
-     read_buffer                               141C     100     256       2   .common     
-     write_buffer                              151C     100     256       2   .common     
+     read_buffer                               1BEC     100     256       2   .common     
+     write_buffer                              1CEC     100     256       2   .common     
 MODULE:                 -- command_parsing.c.o --
 - PROCEDURES:
-     split_up_input                          308657      98     152       2   .text       
-     parse_command                           3086EF      71     113       2   .text       
-     write_to_seg_parser                     308760      B1     177       2   .text       
+     split_up_input                          30865C      98     152       2   .text       
+     parse_command                           3086F4      71     113       2   .text       
+     write_to_seg_parser                     308765      B1     177       2   .text       
 - VARIABLES:
      STRING....1                               C015       3       3       1   .rodata1    
      STRING....2                               C018       3       3       1   .rodata1    
@@ -850,7 +851,11 @@ MODULE:                 -- command_parsing.c.o --
      STRING..cannot.be.displayed.9             C0F9      46      70       1   .rodata1    
 MODULE:                 -- functions.c.o --
 - PROCEDURES:
-     write_to_seg                            308811      D0     208       2   .text       
+     write_to_seg                            308816      D0     208       2   .text       
+- VARIABLES:
+MODULE:                 -- timer.c.o --
+- PROCEDURES:
+     init_TC7                                3088E6      13      19       2   .text       
 - VARIABLES:
 
 *********************************************************************************************
@@ -858,7 +863,7 @@ MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                    14    116      0
+  main.c.o                                    14    121      0
   Start12.c.o                                  0     52      0
   CTYPE.C.o (ansibi.lib)                       0     57      0
   HEAP.C.o (ansibi.lib)                     2000     12      0
@@ -870,6 +875,7 @@ MODULE STATISTIC
   serial.c.o                                 518    287      0
   command_parsing.c.o                          0    442    298
   functions.c.o                                0    208      0
+  timer.c.o                                    0     19      0
   other                                     1024     12     18
 
 *********************************************************************************************
@@ -880,6 +886,7 @@ SECTION: ".text"
   _strtol strtol strlen strcpy strtok malloc free SerialInitialise 
   read_interrupt_init SCI_read_char get_new_command print_to_serial 
   SCI_write_char split_up_input parse_command write_to_seg_parser write_to_seg 
+  init_TC7 
 SECTION: ".data"
   sci_port read_end_char 
 SECTION: ".bss"
@@ -1576,10 +1583,10 @@ SECTION: ".abs_section_2ae"
   _CAN4RXTSR 
 SECTION: ".abs_section_2be"
   _CAN4TXTSR 
-SECTION: ".common"
-  errno read_buffer write_buffer 
 SECTION: "HEAP_SEGMENT"
   _heap_ 
+SECTION: ".common"
+  errno read_buffer write_buffer 
 SECTION: ".abs_section_ff80"
   _vect 
 
@@ -1627,19 +1634,19 @@ OBJECT LIST SORTED BY ADDRESS
      _RTICTL                                     3B       1       1       0   .abs_section_3b
      _COPCTL                                     3C       1       1       1   .abs_section_3c
      _ARMCOP                                     3F       1       1       0   .abs_section_3f
-     _TIOS                                       40       1       1       0   .abs_section_40
+     _TIOS                                       40       1       1       1   .abs_section_40
      _CFORC                                      41       1       1       0   .abs_section_41
      _OC7M                                       42       1       1       0   .abs_section_42
      _OC7D                                       43       1       1       0   .abs_section_43
      _TCNT                                       44       2       2       0   .abs_section_44
-     _TSCR1                                      46       1       1       0   .abs_section_46
+     _TSCR1                                      46       1       1       2   .abs_section_46
      _TTOV                                       47       1       1       0   .abs_section_47
      _TCTL1                                      48       1       1       0   .abs_section_48
      _TCTL2                                      49       1       1       0   .abs_section_49
      _TCTL3                                      4A       1       1       0   .abs_section_4a
      _TCTL4                                      4B       1       1       0   .abs_section_4b
      _TIE                                        4C       1       1       0   .abs_section_4c
-     _TSCR2                                      4D       1       1       0   .abs_section_4d
+     _TSCR2                                      4D       1       1       3   .abs_section_4d
      _TFLG1                                      4E       1       1       0   .abs_section_4e
      _TFLG2                                      4F       1       1       0   .abs_section_4f
      _TC0                                        50       2       2       0   .abs_section_50
@@ -1937,10 +1944,10 @@ OBJECT LIST SORTED BY ADDRESS
      string_ready                              1414       2       2       3   .bss        
      index.1                                   1416       2       2       5   .bss        
      write_index.2                             1418       2       2       4   .bss        
-     errno                                     141A       2       2       2   .common     
-     read_buffer                               141C     100     256       2   .common     
-     write_buffer                              151C     100     256       2   .common     
-     _heap_                                    161C     7D0    2000       2   HEAP_SEGMENT
+     _heap_                                    141A     7D0    2000       2   HEAP_SEGMENT
+     errno                                     1BEA       2       2       2   .common     
+     read_buffer                               1BEC     100     256       2   .common     
+     write_buffer                              1CEC     100     256       2   .common     
      _Startup                                  C000       B      11       0   .init       
      STRING....1                               C015       3       3       1   .rodata1    
      STRING....2                               C018       3       3       1   .rodata1    
@@ -1961,31 +1968,32 @@ OBJECT LIST SORTED BY ADDRESS
      UnimplementedISR                          C267       2       2      61   NON_BANKED  
      serial_ISR                                C269      2D      45       2   NON_BANKED  
      _vect                                     FF80      7E     126       0   .abs_section_ff80
-     main                                    308000      74     116       2   .text       
-     Init                                    308074      29      41       2   .text       
-     isdigit                                 30809D       E      14       2   .text       
-     isspace                                 3080AB      17      23       4   .text       
-     toupper                                 3080C2      14      20       4   .text       
-     _heapcrash_                             3080D6       C      12       6   .text       
-     CheckCharWithBase                       3080E2      3A      58       2   .text       
-     _strtoul                                30811C     173     371      11   .text       
-     _strtol                                 30828F      D6     214       4   .text       
-     strtol                                  308365      14      20       4   .text       
-     strlen                                  308379      14      20      14   .text       
-     strcpy                                  30838D       D      13       2   .text       
-     strtok                                  30839A      5E      94       4   .text       
-     malloc                                  3083F8      A7     167       4   .text       
-     free                                    30849F      C6     198       3   .text       
-     SerialInitialise                        308565      42      66       2   .text       
-     read_interrupt_init                     3085A7       8       8       2   .text       
-     SCI_read_char                           3085AF      3E      62       2   .text       
-     get_new_command                         3085ED      17      23       2   .text       
-     print_to_serial                         308604      21      33      16   .text       
-     SCI_write_char                          308625      32      50       2   .text       
-     split_up_input                          308657      98     152       2   .text       
-     parse_command                           3086EF      71     113       2   .text       
-     write_to_seg_parser                     308760      B1     177       2   .text       
-     write_to_seg                            308811      D0     208       2   .text       
+     main                                    308000      79     121       2   .text       
+     Init                                    308079      29      41       2   .text       
+     isdigit                                 3080A2       E      14       2   .text       
+     isspace                                 3080B0      17      23       4   .text       
+     toupper                                 3080C7      14      20       4   .text       
+     _heapcrash_                             3080DB       C      12       6   .text       
+     CheckCharWithBase                       3080E7      3A      58       2   .text       
+     _strtoul                                308121     173     371      11   .text       
+     _strtol                                 308294      D6     214       4   .text       
+     strtol                                  30836A      14      20       4   .text       
+     strlen                                  30837E      14      20      14   .text       
+     strcpy                                  308392       D      13       2   .text       
+     strtok                                  30839F      5E      94       4   .text       
+     malloc                                  3083FD      A7     167       4   .text       
+     free                                    3084A4      C6     198       3   .text       
+     SerialInitialise                        30856A      42      66       2   .text       
+     read_interrupt_init                     3085AC       8       8       2   .text       
+     SCI_read_char                           3085B4      3E      62       2   .text       
+     get_new_command                         3085F2      17      23       2   .text       
+     print_to_serial                         308609      21      33      16   .text       
+     SCI_write_char                          30862A      32      50       2   .text       
+     split_up_input                          30865C      98     152       2   .text       
+     parse_command                           3086F4      71     113       2   .text       
+     write_to_seg_parser                     308765      B1     177       2   .text       
+     write_to_seg                            308816      D0     208       2   .text       
+     init_TC7                                3088E6      13      19       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -2012,8 +2020,6 @@ rtshc12.c.o (ansibi.lib):
 serial.c.o:
   write_interrupt_init 
 NOT USED VARIABLES
-main.c.o:
-  test 
 CTYPE.C.o (ansibi.lib):
   _ctype 
 STDLIB.C.o (ansibi.lib):
@@ -2048,7 +2054,7 @@ _LDIVU                    USES _lDivMod
 serial_ISR                USES sci_port write_buffer write_end_char 
                                 SCI_write_char read_buffer read_end_char SCI_read_char 
 _vect                     USES UnimplementedISR serial_ISR 
-main                      USES _COPCTL sci_port SerialInitialise 
+main                      USES _COPCTL init_TC7 sci_port SerialInitialise 
                                 read_interrupt_init get_new_command split_up_input parse_command 
                                 strtol write_to_seg free 
 Init                      USES _startupData 
@@ -2074,6 +2080,7 @@ write_to_seg_parser       USES STRING.Error..Wrong.number..5 print_to_serial
                                 strlen STRING.Error..7.seg.can.onl.6 write_end_char 
                                 STRING...7 STRING...8 STRING..cannot.be.displayed.9 
 write_to_seg              USES strlen 
+init_TC7                  USES _TSCR1 _TSCR2 _TIOS 
 
 *********************************************************************************************
 DEPENDENCY TREE
@@ -2082,6 +2089,8 @@ DEPENDENCY TREE
  | 
  +- main                
  |  | 
+ |  +- init_TC7            
+ |  |    
  |  +- SerialInitialise    
  |  |  | 
  |  |  +- _CASE_CHECKED_BYTE  
@@ -2179,5 +2188,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 8
-Total size of all blocks to be downloaded: 3081
+Total size of all blocks to be downloaded: 3105
 

@@ -9,8 +9,8 @@
 #include "serial.h"
 #include "command_parsing.h"
 #include "functions.h"
+#include "timer.h"
 
- //DICK
 
 //Creating a GLOBAL SERIAL PORT instance --> needed by ISR
 //var holding serial port struct (known globally)
@@ -20,12 +20,13 @@ SerialPort sci_port = {&SCI0BDH, &SCI0BDL, &SCI0CR1, &SCI0CR2, &SCI0DRL, &SCI0SR
 char write_end_char = '\0';     //variable for signifying end of a string being WRITTEN (GLOBAL)
 char read_end_char = '\r';            //variable for signifying end of a string being READ (GLOBAL)
 
-char *test;
 
 
-//main()
 void main(void) {
 
+//---------------------------VARIABLES--------------------------- 
+
+  //Functions
   int func_num = 0;       //function chooser
   int number_of_functions = 3;    //number of command funcitons available to the program
   int number_of_parameters;
@@ -34,30 +35,34 @@ void main(void) {
   //Seven Deg displaying:
   char *num_to_display;
   
-  
-  
-  
-  
-  
+
+  //Serial Read and Write:
   char *read_string, *write_string;     //char array for reading into and writing from
-  
   char **command;       //2d array to spli the parameters up as as strings
-  
- //Making the watchdog timer longer (NOW 2^24):
+
+
+ 
+//---------------------------SETUP--------------------------- 
+
+  //Making the watchdog timer longer (NOW 2^24):
   COPCTL |= 0b00000111;
       
-   
+ 
+  //Initialising the timer and output compare CH7:
+  init_TC7();
+    
 
-  //initialising the serial
+  //initialising the SCI
   SerialInitialise(BAUD_9600, &sci_port);
   
   //setting up read interrupt;
   read_interrupt_init(&sci_port);
-  
+ 
+
 	EnableInterrupts;
 
 
-  
+//-----------------------FUNCTION LOOP-----------------------  
   while (1){
     
     _FEED_COP();        //keep feeding dog
