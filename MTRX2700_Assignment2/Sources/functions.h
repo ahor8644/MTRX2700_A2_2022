@@ -21,10 +21,12 @@
 #define HEX_F 0x71
 #define BLNK 0x00
 
+#define ONEMS 375   //one ms is 375 counts at 64 prescaler
+
 
 void write_to_seg(char *num_to_display);
 
-
+void delay_1ms(void);
 
 
 

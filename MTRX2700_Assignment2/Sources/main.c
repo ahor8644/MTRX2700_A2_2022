@@ -14,7 +14,7 @@
 
 //Creating a GLOBAL SERIAL PORT instance --> needed by ISR
 //var holding serial port struct (known globally)
-SerialPort sci_port = {&SCI0BDH, &SCI0BDL, &SCI0CR1, &SCI0CR2, &SCI0DRL, &SCI0SR1};
+SerialPort sci_port = {&SCI1BDH, &SCI1BDL, &SCI1CR1, &SCI1CR2, &SCI1DRL, &SCI1SR1};
 
 //USER CAN CHANGE THESE:
 char write_end_char = '\0';     //variable for signifying end of a string being WRITTEN (GLOBAL)

@@ -168,6 +168,8 @@ int write_to_seg_parser(SerialPort *serial_port, char **command, int num_params)
   //going through each letter
   for (i = 0; i < strlen(seg_str); i++){
   
+    _FEED_COP();
+  
     //check if digit is A-F, if so continue to next
     if ((seg_str[i] >= 65) && (seg_str[i] <= 70)){
   
