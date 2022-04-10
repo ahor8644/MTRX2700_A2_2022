@@ -146,8 +146,8 @@ void SCI_read_char(SerialPort *serial_port, char buffer[], char end_read_indicat
  
  //BACKSPACES NOT WORKING FOR HARDWARE!!!!!:
  
- //for BACKSPACES, decrement index to be 'removed' (when next char writes over it):
- if (read_char == '\b' ){
+ //for BACKSPACES (or DEL (127)), decrement index to be 'removed' (when next char writes over it):
+ if ((read_char == '\b') || (read_char == 127)){
   
   //if no letters to backspace (index = 0), return out
   if (index == 0){

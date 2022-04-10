@@ -114,11 +114,11 @@ int parse_command(SerialPort *serial_port, char **command, int num_funcs, int nu
   switch(function_choice){
     
     case 1:
-      //parse_successful = flashing_lights_parser();
+      parse_successful = flashing_function_parser(serial_port, command, num_params);
       break;
-      
+     
+    //no function specific parsing at this stage for music function:  
     case 2:
-      
       break;
       
     case 3:
@@ -127,13 +127,69 @@ int parse_command(SerialPort *serial_port, char **command, int num_funcs, int nu
       
       break;
   }
-  
 
-  
   return parse_successful;  
 }
 
 
+
+//Function 1 (Flashing LEDs) Parser:
+int flashing_function_parser(SerialPort *serial_port, char **command, int num_params){
+  /*
+    This function is a parser for function 1: Flashing LEDs.
+    The parser checks the 3 required arguments for the Flashing LEDs function inside the
+    split up command:
+        
+        flash_speed (1-10), flash_duration in 100ms increments (1-100), pattern (A or B)   
+    
+    returning 0 if invalid and 1 if valid. 
+  */
+  
+  int i, speed, duration, pattern;
+  int is_valid = 1;
+  
+  
+  //1) command must have 5 parameters (2 command, 3 function);
+  if (5 != num_params){
+    print_to_serial(serial_port, "Error! Flashing Function requires 3 parameters: Speed: 1 - 10, Duration (100ms): 1 - 100, Pattern: A or B.\n");  
+    return 0;
+  }
+  
+  
+  //2) Speed:
+  speed = atoi(command[2]);   //will return 0 if conversion is unsuccessful (non numerical input)
+  if ((speed < 1) || (speed > 10)){
+    print_to_serial(serial_port, "Error! Invalid Flashing Speed. Allowed: 1 - 10\n");
+    is_valid = 0; 
+  }
+  
+  //3) Duration:
+  duration = atoi(command[3]);
+    if ((duration < 1) || (duration > 100)){
+    print_to_serial(serial_port, "Error! Invalid Flashing Duration. Allowed: 1 - 100\n");
+    is_valid = 0; 
+  }
+  
+  //4) Pattern:
+  if (strlen(command[4])>1){
+    print_to_serial(serial_port, "Error! Flashing Pattern too long! Allowed: 'A' or 'B'\n");
+    is_valid = 0;    
+  }
+  
+  
+  pattern = command[4][0];
+  if ((pattern != 'A') && (pattern != 'B')){
+    print_to_serial(serial_port, "Error! Invalid Flashing Pattern. Allowed: 'A' or 'B'\n");
+    is_valid = 0; 
+  }
+
+  return is_valid;  
+}
+
+
+
+
+//Function 3 (7-seg write) Parser:
 int write_to_seg_parser(SerialPort *serial_port, char **command, int num_params){
   
  
@@ -154,7 +210,7 @@ int write_to_seg_parser(SerialPort *serial_port, char **command, int num_params)
   if (num_params != 3){
     
     print_to_serial(serial_port, "Error! Wrong number of arguments for 7-seg function. Allowed: 1.\n");
-    is_valid = 0;  
+    return 0;  
   }
   
   //check length of input

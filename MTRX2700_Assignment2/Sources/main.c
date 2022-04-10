@@ -31,9 +31,16 @@ void main(void) {
   int number_of_functions = 3;    //number of command funcitons available to the program
   int number_of_parameters;
   
+  //int test_index = 0;
+  
+  //Flashing Function;
+  int speed, duration;
+  char pattern;
   
   //Seven Deg displaying:
   char *num_to_display;
+  
+  
   
 
   //Serial Read and Write:
@@ -50,8 +57,7 @@ void main(void) {
  
   //Initialising the timer and output compare CH7:
   init_TC7();
-    
-
+  
   //initialising the SCI
   SerialInitialise(BAUD_9600, &sci_port);
   
@@ -62,6 +68,36 @@ void main(void) {
 	EnableInterrupts;
 
 
+
+//TESTING PUTTY using Polling
+/*  write_string = "fuck you";
+
+
+  while (1){
+  
+    //while register isnt ready for a new char, loop back
+    while (SCI1SR1 & 0b10000000 == 0){
+      _FEED_COP();
+    }
+    
+    //is char to send is a NULL terminator - break
+    if (write_string[test_index] == '\0'){
+      break;
+    }
+    
+    //put data in register to be sent out
+    SCI1DRL = write_string[test_index];
+    test_index++;
+  }
+  
+
+  while (1){
+    _FEED_COP();
+  }
+  
+}
+*/
+ 
 //-----------------------FUNCTION LOOP-----------------------  
   while (1){
     
@@ -70,6 +106,7 @@ void main(void) {
     
     //wait for the new command:
     read_string = get_new_command();
+    
     
     command = split_up_input(read_string, &number_of_parameters);
     
@@ -86,7 +123,12 @@ void main(void) {
       switch (func_num){
         
         case 1:
-          //flashing_function();
+          
+          speed = atoi(command[2]);
+          duration = atoi(command[3]);
+          pattern = command[4][0];
+          
+          //flashing_function(speed, duration, pattern);
           break;
           
         case 2:

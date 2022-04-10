@@ -7,6 +7,21 @@
 //BE CAREFUL, ALREADY SOMETHING WITH THE NAME 'BLANK' in derivative.h
 
 
+
+void flashing_function(int speed, int duration, int pattern){
+
+  DDRB = 0xFF;
+  DDRJ = 0xFF;
+  PTJ = 0x00;
+  
+  //Flash rate = 'speed' * 10ms --> i.e. speed = 10 = 100ms on, 100ms off etc  
+  
+  
+}
+
+
+
+
 void write_to_seg(char *num_to_display){
   
   //array of hex codes corresponding to display digits
@@ -39,12 +54,8 @@ void write_to_seg(char *num_to_display){
   
   
   //Converting numbers to indexs
-  
-  test1 = num_to_display[0];
-  
   for (i = blanks; i < 4; i++){
-   
-    
+  
     //if current digit is a hex char: subtract 55
     if ((num_to_display[i-blanks] >= 65) && (num_to_display[i-blanks] <=70)){
       
@@ -70,7 +81,7 @@ void write_to_seg(char *num_to_display){
      PTP = PTP_vals[j];
      PORTB = digits[j];
      
-     delay_1ms();
+     delay_1ms(1);
      
     }
     
@@ -86,21 +97,27 @@ void write_to_seg(char *num_to_display){
 
 
 
-void delay_1ms(void){
+void delay_1ms(int ms){
   /*
     This function uses the timer and the output compare channel 7
-    to create a delay of 1ms (375 timer counts @64P).
+    to create a delay of ms*1 milliseconds (nm loops of 375 timer
+    counts @64P).
   */
-
-  TC7 = TCNT + ONEMS;
+  int i;
   
-  //keep looping until output compare successful (1ms has passed)
-  while (!TFLG1_C7F){
+  //Loop 1ms timer delay 'ms' times
+  for (i = 0; i < ms; i++){
+    
+    TC7 = TCNT + ONEMS;
+    
+    //keep looping until output compare successful (1ms has passed)
+    while (!TFLG1_C7F){
+    }
+    
+    //reset output compare flag
+    TFLG1_C7F = 1;
   }
-  
-  //reset output compare flag
-  TFLG1_C7F = 1;
-  
+
 }
   
     

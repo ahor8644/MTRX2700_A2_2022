@@ -23,10 +23,14 @@
 
 #define ONEMS 375   //one ms is 375 counts at 64 prescaler
 
+//Function 1: Flashing LEDs
+void flashing_function(int speed, int duration, int pattern);
 
+//Function 3: Writing hex number to 7-seg
 void write_to_seg(char *num_to_display);
 
-void delay_1ms(void);
+//Delay function (in 1ms increments)
+void delay_1ms(int ms);
 
 
 

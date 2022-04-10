@@ -47,7 +47,7 @@ Section Name                    Size  Type     From       To       Segment
 .rodata1                         298     R     0xC015     0xC13E   ROM_C000
 NON_BANKED                       343     R     0xC13F     0xC295   ROM_C000
 .copy                             18     R     0xC296     0xC2A7   ROM_C000
-.text                           2413     R   0x308000   0x30896C   PAGE_30
+.text                           2419     R   0x308000   0x308972   PAGE_30
 .stack                          4096   R/W     0x1000     0x1FFF   RAM
 .data                             13   R/W     0x2000     0x200C   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
@@ -398,7 +398,7 @@ HEAP_SEGMENT                    2000   R/W     0x201A     0x27E9   RAM
 .vectSeg342_vect                   2     R     0xFFFE     0xFFFF   .vectSeg342
 
 Summary of section sizes per section type:
-READ_ONLY (R):         C95 (dec:     3221)
+READ_ONLY (R):         C9B (dec:     3227)
 READ_WRITE (R/W):     19EC (dec:     6636)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -791,7 +791,7 @@ MODULE:                 -- STDLIB.C.o (ansibi.lib) --
 - VARIABLES:
 MODULE:                 -- STRING.C.o (ansibi.lib) --
 - PROCEDURES:
-     strlen                                  30837E      14      20      14   .text       
+     strlen                                  30837E      14      20      12   .text       
      strcpy                                  308392       D      13       2   .text       
      strtok                                  30839F      5E      94       4   .text       
 - VARIABLES:
@@ -823,10 +823,10 @@ MODULE:                 -- serial.c.o --
 - PROCEDURES:
      SerialInitialise                        30856A      42      66       2   .text       
      read_interrupt_init                     3085AC       8       8       2   .text       
-     SCI_read_char                           3085B4      3E      62       2   .text       
-     get_new_command                         3085F2      17      23       2   .text       
-     print_to_serial                         308609      21      33      16   .text       
-     SCI_write_char                          30862A      32      50       2   .text       
+     SCI_read_char                           3085B4      40      64       2   .text       
+     get_new_command                         3085F4      17      23       2   .text       
+     print_to_serial                         30860B      21      33      16   .text       
+     SCI_write_char                          30862C      32      50       2   .text       
      serial_ISR                                C269      2D      45       2   NON_BANKED  
 - VARIABLES:
      string_ready                              2014       2       2       3   .bss        
@@ -836,9 +836,9 @@ MODULE:                 -- serial.c.o --
      write_buffer                              28EC     100     256       2   .common     
 MODULE:                 -- command_parsing.c.o --
 - PROCEDURES:
-     split_up_input                          30865C      98     152       2   .text       
-     parse_command                           3086F4      71     113       2   .text       
-     write_to_seg_parser                     308765      B8     184       2   .text       
+     split_up_input                          30865E      98     152       2   .text       
+     parse_command                           3086F6      71     113       2   .text       
+     write_to_seg_parser                     308767      B8     184       2   .text       
 - VARIABLES:
      STRING....1                               C015       3       3       1   .rodata1    
      STRING....2                               C018       3       3       1   .rodata1    
@@ -851,12 +851,12 @@ MODULE:                 -- command_parsing.c.o --
      STRING..cannot.be.displayed.9             C0F9      46      70       1   .rodata1    
 MODULE:                 -- functions.c.o --
 - PROCEDURES:
-     write_to_seg                            30881D     12E     302       2   .text       
-     delay_1ms                               30894B       F      15       2   .text       
+     write_to_seg                            30881F     132     306       2   .text       
+     delay_1ms                               308951       F      15       2   .text       
 - VARIABLES:
 MODULE:                 -- timer.c.o --
 - PROCEDURES:
-     init_TC7                                30895A      13      19       2   .text       
+     init_TC7                                308960      13      19       2   .text       
 - VARIABLES:
 
 *********************************************************************************************
@@ -873,9 +873,9 @@ MODULE STATISTIC
   ALLOC.C.o (ansibi.lib)                       4    365      0
   rtshc12.c.o (ansibi.lib)                     2    296      0
   isr_vectors.c.o                              0      2    126
-  serial.c.o                                 518    287      0
+  serial.c.o                                 518    289      0
   command_parsing.c.o                          0    449    298
-  functions.c.o                                0    317      0
+  functions.c.o                                0    321      0
   timer.c.o                                    0     19      0
   other                                     4096     12     18
 
@@ -1979,23 +1979,23 @@ OBJECT LIST SORTED BY ADDRESS
      _strtoul                                308121     173     371      11   .text       
      _strtol                                 308294      D6     214       4   .text       
      strtol                                  30836A      14      20       4   .text       
-     strlen                                  30837E      14      20      14   .text       
+     strlen                                  30837E      14      20      12   .text       
      strcpy                                  308392       D      13       2   .text       
      strtok                                  30839F      5E      94       4   .text       
      malloc                                  3083FD      A7     167       4   .text       
      free                                    3084A4      C6     198       3   .text       
      SerialInitialise                        30856A      42      66       2   .text       
      read_interrupt_init                     3085AC       8       8       2   .text       
-     SCI_read_char                           3085B4      3E      62       2   .text       
-     get_new_command                         3085F2      17      23       2   .text       
-     print_to_serial                         308609      21      33      16   .text       
-     SCI_write_char                          30862A      32      50       2   .text       
-     split_up_input                          30865C      98     152       2   .text       
-     parse_command                           3086F4      71     113       2   .text       
-     write_to_seg_parser                     308765      B8     184       2   .text       
-     write_to_seg                            30881D     12E     302       2   .text       
-     delay_1ms                               30894B       F      15       2   .text       
-     init_TC7                                30895A      13      19       2   .text       
+     SCI_read_char                           3085B4      40      64       2   .text       
+     get_new_command                         3085F4      17      23       2   .text       
+     print_to_serial                         30860B      21      33      16   .text       
+     SCI_write_char                          30862C      32      50       2   .text       
+     split_up_input                          30865E      98     152       2   .text       
+     parse_command                           3086F6      71     113       2   .text       
+     write_to_seg_parser                     308767      B8     184       2   .text       
+     write_to_seg                            30881F     132     306       2   .text       
+     delay_1ms                               308951       F      15       2   .text       
+     init_TC7                                308960      13      19       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -2194,5 +2194,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 8
-Total size of all blocks to be downloaded: 3221
+Total size of all blocks to be downloaded: 3227
 
