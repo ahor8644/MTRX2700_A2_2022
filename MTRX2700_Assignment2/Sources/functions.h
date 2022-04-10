@@ -2,31 +2,47 @@
 #define FUNCTIONS_H
 
 
+//Flashing Function LED nums:
+#define ONE_LED 0b00000001
+#define TWO_LED 0b00000010
+#define THREE_LED 0b00000100
+#define FOUR_LED 0b00001000
+#define FIVE_LED 0b00010000
+#define SIX_LED 0b00100000
+#define SEVEN_LED 0b01000000
+#define EIGHT_LED 0b10000000
 
-#define ZERO 0x3F
-#define ONE 0x06
-#define TWO 0x5B
-#define THREE 0x4F
-#define FOUR 0x66
-#define FIVE 0x6D
-#define SIX 0x7D
-#define SEVEN 0x07
-#define EIGHT 0x7F
-#define NINE 0x6F
-#define HEX_A 0x77 
-#define HEX_B 0x7C
-#define HEX_C 0x39
-#define HEX_D 0x5E
-#define HEX_E 0x79
-#define HEX_F 0x71
-#define BLNK 0x00
+
+
+//7-seg display codes:
+#define ZERO_SEG 0x3F
+#define ONE_SEG 0x06
+#define TWO_SEG 0x5B
+#define THREE_SEG 0x4F
+#define FOUR_SEG 0x66
+#define FIVE_SEG 0x6D
+#define SIX_SEG 0x7D
+#define SEVEN_SEG 0x07
+#define EIGHT_SEG 0x7F
+#define NINE_SEG 0x6F
+#define HEX_A_SEG 0x77 
+#define HEX_B_SEG 0x7C
+#define HEX_C_SEG 0x39
+#define HEX_D_SEG 0x5E
+#define HEX_E_SEG 0x79
+#define HEX_F_SEG 0x71
+#define BLNK_SEG 0x00
 
 #define ONEMS 375   //one ms is 375 counts at 64 prescaler
 
+//Function 1: Flashing LEDs
+void flashing_function(int speed, int num_flashes, int pattern);
 
-void write_to_seg(char *num_to_display);
+//Function 3: Writing hex number to 7-seg
+void hex_to_seg(char *num_to_display);
 
-void delay_1ms(void);
+//Delay function (in 1ms increments)
+void delay_ms(int ms);
 
 
 

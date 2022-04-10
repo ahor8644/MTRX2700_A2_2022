@@ -26,22 +26,29 @@ void main(void) {
 
 //---------------------------VARIABLES--------------------------- 
 
+  //Serial Read and Write:
+  char *read_string;     //char array for reading into and writing from
+  char **command;       //2d array to spli the parameters up as as strings
+
   //Functions
   int func_num = 0;       //function chooser
   int number_of_functions = 3;    //number of command funcitons available to the program
   int number_of_parameters;
   
+  //int test_index = 0;
+  
+  //Flashing Function;
+  int speed, num_flashes;
+  char pattern;
   
   //Seven Deg displaying:
   char *num_to_display;
   
-
-  //Serial Read and Write:
-  char *read_string, *write_string;     //char array for reading into and writing from
-  char **command;       //2d array to spli the parameters up as as strings
-
-
- 
+  //Music Module:
+  char *music_input;
+  char **tune;
+  int number_of_notes;
+  
 //---------------------------SETUP--------------------------- 
 
   //Making the watchdog timer longer (NOW 2^24):
@@ -50,18 +57,52 @@ void main(void) {
  
   //Initialising the timer and output compare CH7:
   init_TC7();
-    
-
+  
   //initialising the SCI
   SerialInitialise(BAUD_9600, &sci_port);
   
   //setting up read interrupt;
   read_interrupt_init(&sci_port);
  
+ 
+ //Initialise the speakers
+ 
+ 
+ 
 
 	EnableInterrupts;
 
 
+
+//TESTING PUTTY using Polling
+/*  write_string = "fuck you";
+
+
+  while (1){
+  
+    //while register isnt ready for a new char, loop back
+    while (SCI1SR1 & 0b10000000 == 0){
+      _FEED_COP();
+    }
+    
+    //is char to send is a NULL terminator - break
+    if (write_string[test_index] == '\0'){
+      break;
+    }
+    
+    //put data in register to be sent out
+    SCI1DRL = write_string[test_index];
+    test_index++;
+  }
+  
+
+  while (1){
+    _FEED_COP();
+  }
+  
+}
+*/
+ 
 //-----------------------FUNCTION LOOP-----------------------  
   while (1){
     
@@ -70,6 +111,7 @@ void main(void) {
     
     //wait for the new command:
     read_string = get_new_command();
+    
     
     command = split_up_input(read_string, &number_of_parameters);
     
@@ -86,17 +128,27 @@ void main(void) {
       switch (func_num){
         
         case 1:
-          //flashing_function();
+          
+          speed = atoi(command[2]);       //speed of flash (10ms inc.)
+          num_flashes = atoi(command[3]);    //duration in seconds
+          pattern = command[4][0];        //A = normal, B = wave
+          
+          flashing_function(speed, num_flashes, pattern);
           break;
           
         case 2:
+          
+          print_to_serial(&sci_port, "Please enter a tune in the form 'note, time'\n");
+          music_input = get_new_command();
+          tune = split_up_input(read_string, &number_of_notes);   //split this up into two arrays for notes and timing inside music function 
+          
           //music_function();
           break;
         
         case 3:
           
           num_to_display = command[2];
-          write_to_seg(num_to_display);
+          hex_to_seg(num_to_display);
           break;
           
         default:
@@ -106,6 +158,8 @@ void main(void) {
     }
       
     free(command);
+    free(tune);
+    
     continue;
   }
     
