@@ -123,7 +123,7 @@ int parse_command(SerialPort *serial_port, char **command, int num_funcs, int nu
       
     case 3:
       
-      parse_successful = write_to_seg_parser(serial_port, command, num_params); 
+      parse_successful = hex_to_seg_parser(serial_port, command, num_params); 
       
       break;
   }
@@ -140,12 +140,12 @@ int flashing_function_parser(SerialPort *serial_port, char **command, int num_pa
     The parser checks the 3 required arguments for the Flashing LEDs function inside the
     split up command:
         
-        flash_speed (1-10), flash_duration in 100ms increments (1-100), pattern (A or B)   
+        ~ flash speed 20ms to 100ms: (1-5), number of flashes (1-100), pattern (A or B) ~   
     
     returning 0 if invalid and 1 if valid. 
   */
   
-  int i, speed, duration, pattern;
+  int speed, num_flashes, pattern;
   int is_valid = 1;
   
   
@@ -158,15 +158,15 @@ int flashing_function_parser(SerialPort *serial_port, char **command, int num_pa
   
   //2) Speed:
   speed = atoi(command[2]);   //will return 0 if conversion is unsuccessful (non numerical input)
-  if ((speed < 1) || (speed > 10)){
+  if ((speed < 1) || (speed > 5)){
     print_to_serial(serial_port, "Error! Invalid Flashing Speed. Allowed: 1 - 10\n");
     is_valid = 0; 
   }
   
   //3) Duration:
-  duration = atoi(command[3]);
-    if ((duration < 1) || (duration > 100)){
-    print_to_serial(serial_port, "Error! Invalid Flashing Duration. Allowed: 1 - 100\n");
+  num_flashes = atoi(command[3]);
+    if ((num_flashes < 1) || (num_flashes > 100)){
+    print_to_serial(serial_port, "Error! Invalid Number of Flashes requested. Allowed: 1 - 100\n");
     is_valid = 0; 
   }
   
@@ -190,7 +190,7 @@ int flashing_function_parser(SerialPort *serial_port, char **command, int num_pa
 
 
 //Function 3 (7-seg write) Parser:
-int write_to_seg_parser(SerialPort *serial_port, char **command, int num_params){
+int hex_to_seg_parser(SerialPort *serial_port, char **command, int num_params){
   
  
   int is_valid = 1;

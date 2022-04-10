@@ -34,7 +34,7 @@ void main(void) {
   //int test_index = 0;
   
   //Flashing Function;
-  int speed, duration;
+  int speed, num_flashes;
   char pattern;
   
   //Seven Deg displaying:
@@ -124,11 +124,11 @@ void main(void) {
         
         case 1:
           
-          speed = atoi(command[2]);
-          duration = atoi(command[3]);
-          pattern = command[4][0];
+          speed = atoi(command[2]);       //speed of flash (10ms inc.)
+          num_flashes = atoi(command[3]);    //duration in seconds
+          pattern = command[4][0];        //A = normal, B = wave
           
-          //flashing_function(speed, duration, pattern);
+          flashing_function(speed, num_flashes, pattern);
           break;
           
         case 2:
@@ -138,7 +138,7 @@ void main(void) {
         case 3:
           
           num_to_display = command[2];
-          write_to_seg(num_to_display);
+          hex_to_seg(num_to_display);
           break;
           
         default:
