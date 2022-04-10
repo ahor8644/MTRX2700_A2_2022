@@ -26,6 +26,10 @@ void main(void) {
 
 //---------------------------VARIABLES--------------------------- 
 
+  //Serial Read and Write:
+  char *read_string;     //char array for reading into and writing from
+  char **command;       //2d array to spli the parameters up as as strings
+
   //Functions
   int func_num = 0;       //function chooser
   int number_of_functions = 3;    //number of command funcitons available to the program
@@ -40,15 +44,11 @@ void main(void) {
   //Seven Deg displaying:
   char *num_to_display;
   
+  //Music Module:
+  char *music_input;
+  char **tune;
+  int number_of_notes;
   
-  
-
-  //Serial Read and Write:
-  char *read_string, *write_string;     //char array for reading into and writing from
-  char **command;       //2d array to spli the parameters up as as strings
-
-
- 
 //---------------------------SETUP--------------------------- 
 
   //Making the watchdog timer longer (NOW 2^24):
@@ -63,6 +63,11 @@ void main(void) {
   
   //setting up read interrupt;
   read_interrupt_init(&sci_port);
+ 
+ 
+ //Initialise the speakers
+ 
+ 
  
 
 	EnableInterrupts;
@@ -132,6 +137,11 @@ void main(void) {
           break;
           
         case 2:
+          
+          print_to_serial(&sci_port, "Please enter a tune in the form 'note, time'\n");
+          music_input = get_new_command();
+          tune = split_up_input(read_string, &number_of_notes);   //split this up into two arrays for notes and timing inside music function 
+          
           //music_function();
           break;
         
@@ -148,6 +158,8 @@ void main(void) {
     }
       
     free(command);
+    free(tune);
+    
     continue;
   }
     
