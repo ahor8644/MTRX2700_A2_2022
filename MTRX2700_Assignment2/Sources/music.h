@@ -10,7 +10,11 @@
 
 
 
-void music_player(char **tune, int note_elements);
+char *convert_to_tune(char *music_input, int *note_elements);
+
+void music_player(void);
+
+
 
 
 __interrupt void music_isr(void);

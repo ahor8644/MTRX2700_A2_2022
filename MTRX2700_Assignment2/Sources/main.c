@@ -10,6 +10,7 @@
 #include "command_parsing.h"
 #include "functions.h"
 #include "timer.h"
+#include "music.h"
 
 
 //Creating a GLOBAL SERIAL PORT instance --> needed by ISR
@@ -42,10 +43,6 @@ void main(void) {
   //Seven Deg displaying:
   char *num_to_display;
   
-  //Music Module:
-  char *music_input;
-  char **tune;
-  int total_note_elements;
   
 //---------------------------SETUP--------------------------- 
 
@@ -77,9 +74,8 @@ void main(void) {
     
     
     //wait for the new command:
+    print_to_serial(&sci_port, "Please enter a command in the form '`, function number, funcparam1, funcparam2, ...\n");
     read_string = get_new_command();
-    
-    
     command = split_up_input(read_string, &number_of_parameters);
     
     
@@ -103,16 +99,9 @@ void main(void) {
           flashing_function(speed, num_flashes, pattern);
           break;
           
-        case 2:
-          
-          print_to_serial(&sci_port, "Please enter a tune in the form 'note, time'\n");
-          print_to_serial(&sci_port, "Notes: C, C#, D, D#, E, E#, F, F#, G, G#, A, A#, B, B#.\n");
-          print_to_serial(&sci_port, "Duration: 1 (whole n), 2 (half n), 4 (quarter n), 8 (eighth n), 16 (sixteenth n).\n");
-          
-          music_input = get_new_command();
-          tune = split_up_input(music_input, &total_note_elements);   //split this up into two arrays for notes and timing inside music function 
-          
-          //music_function();
+        case 2:  //MUSIC PLAYER
+        
+          music_player();
           break;
         
         case 3:
@@ -127,8 +116,8 @@ void main(void) {
       
     }
       
+    //FREE INDIVIDUAL ELEMENTS IN COMMAND TOO
     free(command);
-    free(tune);
     
     continue;
   }
