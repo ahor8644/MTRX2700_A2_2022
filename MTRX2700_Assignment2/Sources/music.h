@@ -10,7 +10,8 @@
 
 
 
-void music_player(char **tune, int *is_playing);
+void music_player(char **tune, int note_elements);
+
 
 __interrupt void music_isr(void);
 

@@ -55,7 +55,9 @@ void SerialInitialise(int baud_rate, SerialPort *serial_port) {
 	  break;
   }
   
+  //enabling transmitter and receiver
   *(serial_port->control_register_2) = SCI1CR2_RE_MASK | SCI1CR2_TE_MASK;
+  
   *(serial_port->control_register_1) = 0x00;
 }
 
@@ -215,6 +217,10 @@ void SCI_write_char(SerialPort *serial_port, char buffer[], char end_write_indic
     //set index to 0 for next string to be written
     write_index = 0;
     return;
+  }
+ 
+  //account for interrupt-register lag
+  while((*(serial_port->status_register) & SCI1SR1_TDRE_MASK) == 0){
   }
   
   //if any other character, send it out and increment index for next time

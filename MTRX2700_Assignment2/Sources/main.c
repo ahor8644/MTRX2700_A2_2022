@@ -35,8 +35,6 @@ void main(void) {
   int number_of_functions = 3;    //number of command funcitons available to the program
   int number_of_parameters;
   
-  //int test_index = 0;
-  
   //Flashing Function;
   int speed, num_flashes;
   char pattern;
@@ -47,12 +45,13 @@ void main(void) {
   //Music Module:
   char *music_input;
   char **tune;
-  int number_of_notes;
+  int total_note_elements;
   
 //---------------------------SETUP--------------------------- 
 
   //Making the watchdog timer longer (NOW 2^24):
-  COPCTL |= 0b00000111;
+  //COPCTL |= 0b01000111;
+  COPCTL = 0x00;
       
  
   //Initialising the timer and output compare CH7:
@@ -65,43 +64,11 @@ void main(void) {
   read_interrupt_init(&sci_port);
  
  
- //Initialise the speakers
- 
- 
  
 
 	EnableInterrupts;
 
 
-
-//TESTING PUTTY using Polling
-/*  write_string = "fuck you";
-
-
-  while (1){
-  
-    //while register isnt ready for a new char, loop back
-    while (SCI1SR1 & 0b10000000 == 0){
-      _FEED_COP();
-    }
-    
-    //is char to send is a NULL terminator - break
-    if (write_string[test_index] == '\0'){
-      break;
-    }
-    
-    //put data in register to be sent out
-    SCI1DRL = write_string[test_index];
-    test_index++;
-  }
-  
-
-  while (1){
-    _FEED_COP();
-  }
-  
-}
-*/
  
 //-----------------------FUNCTION LOOP-----------------------  
   while (1){
@@ -139,8 +106,11 @@ void main(void) {
         case 2:
           
           print_to_serial(&sci_port, "Please enter a tune in the form 'note, time'\n");
+          print_to_serial(&sci_port, "Notes: C, C#, D, D#, E, E#, F, F#, G, G#, A, A#, B, B#.\n");
+          print_to_serial(&sci_port, "Duration: 1 (whole n), 2 (half n), 4 (quarter n), 8 (eighth n), 16 (sixteenth n).\n");
+          
           music_input = get_new_command();
-          tune = split_up_input(read_string, &number_of_notes);   //split this up into two arrays for notes and timing inside music function 
+          tune = split_up_input(music_input, &total_note_elements);   //split this up into two arrays for notes and timing inside music function 
           
           //music_function();
           break;

@@ -1,16 +1,49 @@
 #include "music.h"
+#include <stdlib.h>
+
+//file-scope variables for toggling speaker on and off
+//'toggle_period' = time between toggling speaker output high/low
+//'toggle_counter' = total toggles for a given note time 
+int toggle_period, toggle_counter;
 
 
-
-
-void music_player(char **tune, int number_of_notes){
+void music_player(char **tune, int note_elements){
   
  
- char *note;
- int note_length;
+ //parse the total amount of note elements
+ //note_elements % 3 must be 0
  
- //int note_freq
- //int length
+ //HOW TO DEAL WITH MISSING ELEMENTS (simply incrementing to next note will throw it off!
+ //parse and convert each seperately?
+ 
+ 
+ int i;
+ char *pitch;
+ int note_duration;
+ 
+ int note_freq, note_time;
+
+ //traversing through each note pair (pitch & time)
+ for (i = 0; i < note_elements; i += 2){
+ 
+    pitch = tune[i];
+    note_duration = atoi(tune[i+1]);
+    
+    //parse and convert note to a frequency and time
+    if (1 == convert_note(pitch, note_duration, note_freq, note_time)){
+    
+      //toggle period is period (peak to peak) of note divided by 2
+      toggle_period = (1/note_freq)/2;
+      //number of toggles is note's total duration/time divided by time for one toggle
+      toggle_counter = note_time/toggle_period;
+        
+      
+    }
+    
+    //if parsing/conversion failed, continue to next note
+    continue;
+ }
+
  
 /* 
  

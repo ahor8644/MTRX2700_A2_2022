@@ -35,7 +35,7 @@ _startupData is allocated at 0xC00B and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
   _Range   pZeroOut       0x1100     2540
-  _Copy    *toCopyDownBeg 0xC3DD
+  _Copy    *toCopyDownBeg 0xC497
 } _startupData;
 
 *********************************************************************************************
@@ -44,10 +44,10 @@ Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .init                             11     R     0xC000     0xC00A   ROM_C000
 .startData                        10     R     0xC00B     0xC014   ROM_C000
-.rodata1                         625     R     0xC015     0xC285   ROM_C000
-NON_BANKED                       343     R     0xC286     0xC3DC   ROM_C000
-.copy                             18     R     0xC3DD     0xC3EE   ROM_C000
-.text                           2868     R   0x308000   0x308B33   PAGE_30
+.rodata1                         811     R     0xC015     0xC33F   ROM_C000
+NON_BANKED                       343     R     0xC340     0xC496   ROM_C000
+.copy                             18     R     0xC497     0xC4A8   ROM_C000
+.text                           2952     R   0x308000   0x308B87   PAGE_30
 .stack                           256   R/W     0x1000     0x10FF   RAM
 .data                             13   R/W     0x1100     0x110C   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
@@ -398,7 +398,7 @@ HEAP_SEGMENT                    2000   R/W     0x111A     0x18E9   RAM
 .vectSeg342_vect                   2     R     0xFFFE     0xFFFF   .vectSeg342
 
 Summary of section sizes per section type:
-READ_ONLY (R):         FA3 (dec:     4003)
+READ_ONLY (R):        10B1 (dec:     4273)
 READ_WRITE (R/W):      AEC (dec:     2796)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -452,7 +452,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _RTICTL                                     3B       1       1       0   .abs_section_3b
      _COPCTL                                     3C       1       1       1   .abs_section_3c
      _ARMCOP                                     3F       1       1       0   .abs_section_3f
-     _TIOS                                       40       1       1       1   .abs_section_40
+     _TIOS                                       40       1       1       2   .abs_section_40
      _CFORC                                      41       1       1       0   .abs_section_41
      _OC7M                                       42       1       1       0   .abs_section_42
      _OC7D                                       43       1       1       0   .abs_section_43
@@ -758,14 +758,17 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                    308000      B7     183       3   .text       
+     main                                    308000      FD     253       5   .text       
 - VARIABLES:
-     sci_port                                  1100       C      12       6   .data       
+     STRING.Please.enter.a.tune..1             C015      2E      46       1   .rodata1    
+     STRING.Notes..C..C...D..D...2             C043      39      57       1   .rodata1    
+     STRING.Duration..1..whole.n.3             C07C      53      83       1   .rodata1    
+     sci_port                                  1100       C      12       9   .data       
      read_end_char                             110C       1       1       2   .data       
      write_end_char                            110D       1       1       2   .bss        
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
-     Init                                    3080B7      29      41       2   .text       
+     Init                                    3080FD      29      41       2   .text       
      _Startup                                  C000       B      11       0   .init       
 - VARIABLES:
      _startupData                              C00B       6       6       3   .startData  
@@ -773,97 +776,97 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                          1100       0       0       1               
 MODULE:                 -- CTYPE.C.o (ansibi.lib) --
 - PROCEDURES:
-     isdigit                                 3080E0       E      14       2   .text       
-     isspace                                 3080EE      17      23       4   .text       
-     toupper                                 308105      14      20       4   .text       
+     isdigit                                 308126       E      14       2   .text       
+     isspace                                 308134      17      23       4   .text       
+     toupper                                 30814B      14      20       4   .text       
 - VARIABLES:
 MODULE:                 -- HEAP.C.o (ansibi.lib) --
 - PROCEDURES:
-     _heapcrash_                             308119       C      12       6   .text       
+     _heapcrash_                             30815F       C      12       6   .text       
 - VARIABLES:
      _heap_                                    111A     7D0    2000       2   HEAP_SEGMENT
 MODULE:                 -- STDLIB.C.o (ansibi.lib) --
 - PROCEDURES:
-     CheckCharWithBase                       308125      3A      58       2   .text       
-     _strtoul                                30815F     173     371      11   .text       
-     _strtol                                 3082D2      D6     214       4   .text       
-     strtol                                  3083A8      14      20      10   .text       
+     CheckCharWithBase                       30816B      3A      58       2   .text       
+     _strtoul                                3081A5     173     371      11   .text       
+     _strtol                                 308318      D6     214       4   .text       
+     strtol                                  3083EE      14      20      10   .text       
 - VARIABLES:
 MODULE:                 -- STRING.C.o (ansibi.lib) --
 - PROCEDURES:
-     strlen                                  3083BC      14      20      14   .text       
-     strcpy                                  3083D0       D      13       2   .text       
-     strtok                                  3083DD      5E      94       4   .text       
+     strlen                                  308402      14      20      14   .text       
+     strcpy                                  308416       D      13       2   .text       
+     strtok                                  308423      5E      94       4   .text       
 - VARIABLES:
      next.2                                    110E       2       2       9   .bss        
 MODULE:                 -- ALLOC.C.o (ansibi.lib) --
 - PROCEDURES:
-     malloc                                  30843B      A7     167       4   .text       
-     free                                    3084E2      C6     198       3   .text       
+     malloc                                  308481      A7     167       4   .text       
+     free                                    308528      C6     198       5   .text       
 - VARIABLES:
      heap_end                                  1110       2       2       3   .bss        
      free_ptr                                  1112       2       2       8   .bss        
 MODULE:                 -- rtshc12.c.o (ansibi.lib) --
 - PROCEDURES:
-     _LCMP_P                                   C286      15      21       1   NON_BANKED  
-     _LNEG                                     C29B       D      13       2   NON_BANKED  
-     _LMULS16x32                               C2A8      1F      31       1   NON_BANKED  
-     _lDivMod                                  C2C7      BE     190       1   NON_BANKED  
-     _LDIVU                                    C385       E      14       1   NON_BANKED  
-     _ILSEXT                                   C393       7       7       2   NON_BANKED  
-     _CASE_CHECKED_BYTE                        C39A      14      20       1   NON_BANKED  
+     _LCMP_P                                   C340      15      21       1   NON_BANKED  
+     _LNEG                                     C355       D      13       2   NON_BANKED  
+     _LMULS16x32                               C362      1F      31       1   NON_BANKED  
+     _lDivMod                                  C381      BE     190       1   NON_BANKED  
+     _LDIVU                                    C43F       E      14       1   NON_BANKED  
+     _ILSEXT                                   C44D       7       7       2   NON_BANKED  
+     _CASE_CHECKED_BYTE                        C454      14      20       2   NON_BANKED  
 - VARIABLES:
      errno                                     18EA       2       2       2   .common     
 MODULE:                 -- isr_vectors.c.o --
 - PROCEDURES:
-     UnimplementedISR                          C3AE       2       2      61   NON_BANKED  
+     UnimplementedISR                          C468       2       2      61   NON_BANKED  
 - VARIABLES:
      _vect                                     FF80      7E     126       0   .abs_section_ff80
 MODULE:                 -- serial.c.o --
 - PROCEDURES:
-     SerialInitialise                        3085A8      42      66       2   .text       
-     read_interrupt_init                     3085EA       8       8       2   .text       
-     SCI_read_char                           3085F2      44      68       2   .text       
-     get_new_command                         308636      17      23       2   .text       
-     print_to_serial                         30864D      21      33      26   .text       
-     SCI_write_char                          30866E      32      50       2   .text       
-     serial_ISR                                C3B0      2D      45       2   NON_BANKED  
+     SerialInitialise                        3085EE      42      66       2   .text       
+     read_interrupt_init                     308630       8       8       2   .text       
+     SCI_read_char                           308638      44      68       2   .text       
+     get_new_command                         30867C      17      23       4   .text       
+     print_to_serial                         308693      21      33      32   .text       
+     SCI_write_char                          3086B4      3D      61       2   .text       
+     serial_ISR                                C46A      2D      45       2   NON_BANKED  
 - VARIABLES:
      string_ready                              1114       2       2       3   .bss        
      index.1                                   1116       2       2       5   .bss        
-     write_index.2                             1118       2       2       4   .bss        
+     write_index.2                             1118       2       2       5   .bss        
      read_buffer                               18EC     100     256       2   .common     
      write_buffer                              19EC     100     256       2   .common     
 MODULE:                 -- command_parsing.c.o --
 - PROCEDURES:
-     split_up_input                          3086A0      98     152       2   .text       
-     parse_command                           308738      86     134       2   .text       
-     flashing_function_parser                3087BE      B1     177       3   .text       
-     hex_to_seg_parser                       30886F      B9     185       3   .text       
+     split_up_input                          3086F1      98     152       4   .text       
+     parse_command                           308789      86     134       2   .text       
+     flashing_function_parser                30880F      B1     177       3   .text       
+     hex_to_seg_parser                       3088C0      B9     185       3   .text       
 - VARIABLES:
-     STRING....1                               C015       3       3       1   .rodata1    
-     STRING....2                               C018       3       3       1   .rodata1    
-     STRING.Invalid.Command..Fir.3             C01B      3A      58       1   .rodata1    
-     STRING.Invalid.Command..Fun.4             C055      2D      45       1   .rodata1    
-     STRING.Error..Flashing.Func.5             C082      6C     108       1   .rodata1    
-     STRING.Error..Invalid.Flash.6             C0EE      30      48       1   .rodata1    
-     STRING.Error..Invalid.Numbe.7             C11E      3E      62       1   .rodata1    
-     STRING.Error..Flashing.Patt.8             C15C      37      55       1   .rodata1    
-     STRING.Error..Invalid.Flash.9             C193      36      54       1   .rodata1    
-     STRING.Error..Wrong.number..10            C1C9      42      66       1   .rodata1    
-     STRING.Error..7.seg.can.onl.11            C20B      31      49       1   .rodata1    
-     STRING...12                               C23C       2       2       1   .rodata1    
-     STRING...13                               C23E       2       2       1   .rodata1    
-     STRING..cannot.be.displayed.14            C240      46      70       1   .rodata1    
+     STRING....1                               C0CF       3       3       1   .rodata1    
+     STRING....2                               C0D2       3       3       1   .rodata1    
+     STRING.Invalid.Command..Fir.3             C0D5      3A      58       1   .rodata1    
+     STRING.Invalid.Command..Fun.4             C10F      2D      45       1   .rodata1    
+     STRING.Error..Flashing.Func.5             C13C      6C     108       1   .rodata1    
+     STRING.Error..Invalid.Flash.6             C1A8      30      48       1   .rodata1    
+     STRING.Error..Invalid.Numbe.7             C1D8      3E      62       1   .rodata1    
+     STRING.Error..Flashing.Patt.8             C216      37      55       1   .rodata1    
+     STRING.Error..Invalid.Flash.9             C24D      36      54       1   .rodata1    
+     STRING.Error..Wrong.number..10            C283      42      66       1   .rodata1    
+     STRING.Error..7.seg.can.onl.11            C2C5      31      49       1   .rodata1    
+     STRING...12                               C2F6       2       2       1   .rodata1    
+     STRING...13                               C2F8       2       2       1   .rodata1    
+     STRING..cannot.be.displayed.14            C2FA      46      70       1   .rodata1    
 MODULE:                 -- functions.c.o --
 - PROCEDURES:
-     flashing_function                       308928      A9     169       2   .text       
-     hex_to_seg                              3089D1     12C     300       2   .text       
-     delay_ms                                308AFD      24      36       8   .text       
+     flashing_function                       308979      A9     169       2   .text       
+     hex_to_seg                              308A22     12C     300       2   .text       
+     delay_ms                                308B4E      24      36       8   .text       
 - VARIABLES:
 MODULE:                 -- timer.c.o --
 - PROCEDURES:
-     init_TC7                                308B21      13      19       2   .text       
+     init_TC7                                308B72      16      22       2   .text       
 - VARIABLES:
 
 *********************************************************************************************
@@ -871,7 +874,7 @@ MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                    14    183      0
+  main.c.o                                    14    253    186
   Start12.c.o                                  0     52      0
   CTYPE.C.o (ansibi.lib)                       0     57      0
   HEAP.C.o (ansibi.lib)                     2000     12      0
@@ -880,10 +883,10 @@ MODULE STATISTIC
   ALLOC.C.o (ansibi.lib)                       4    365      0
   rtshc12.c.o (ansibi.lib)                     2    296      0
   isr_vectors.c.o                              0      2    126
-  serial.c.o                                 518    293      0
+  serial.c.o                                 518    304      0
   command_parsing.c.o                          0    648    625
   functions.c.o                                0    505      0
-  timer.c.o                                    0     19      0
+  timer.c.o                                    0     22      0
   other                                      256     12     18
 
 *********************************************************************************************
@@ -902,12 +905,14 @@ SECTION: ".bss"
 SECTION: ".init"
   _Startup 
 SECTION: ".rodata1"
-  STRING....1 STRING....2 STRING.Invalid.Command..Fir.3 
-  STRING.Invalid.Command..Fun.4 STRING.Error..Flashing.Func.5 
-  STRING.Error..Invalid.Flash.6 STRING.Error..Invalid.Numbe.7 
-  STRING.Error..Flashing.Patt.8 STRING.Error..Invalid.Flash.9 
-  STRING.Error..Wrong.number..10 STRING.Error..7.seg.can.onl.11 STRING...12 
-  STRING...13 STRING..cannot.be.displayed.14 
+  STRING.Please.enter.a.tune..1 STRING.Notes..C..C...D..D...2 
+  STRING.Duration..1..whole.n.3 STRING....1 STRING....2 
+  STRING.Invalid.Command..Fir.3 STRING.Invalid.Command..Fun.4 
+  STRING.Error..Flashing.Func.5 STRING.Error..Invalid.Flash.6 
+  STRING.Error..Invalid.Numbe.7 STRING.Error..Flashing.Patt.8 
+  STRING.Error..Invalid.Flash.9 STRING.Error..Wrong.number..10 
+  STRING.Error..7.seg.can.onl.11 STRING...12 STRING...13 
+  STRING..cannot.be.displayed.14 
 SECTION: "NON_BANKED"
   _LCMP_P _LNEG _LMULS16x32 _lDivMod _LDIVU _ILSEXT _CASE_CHECKED_BYTE 
   UnimplementedISR serial_ISR 
@@ -1644,7 +1649,7 @@ OBJECT LIST SORTED BY ADDRESS
      _RTICTL                                     3B       1       1       0   .abs_section_3b
      _COPCTL                                     3C       1       1       1   .abs_section_3c
      _ARMCOP                                     3F       1       1       0   .abs_section_3f
-     _TIOS                                       40       1       1       1   .abs_section_40
+     _TIOS                                       40       1       1       2   .abs_section_40
      _CFORC                                      41       1       1       0   .abs_section_41
      _OC7M                                       42       1       1       0   .abs_section_42
      _OC7D                                       43       1       1       0   .abs_section_43
@@ -1945,7 +1950,7 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
-     sci_port                                  1100       C      12       6   .data       
+     sci_port                                  1100       C      12       9   .data       
      read_end_char                             110C       1       1       2   .data       
      write_end_char                            110D       1       1       2   .bss        
      next.2                                    110E       2       2       9   .bss        
@@ -1953,65 +1958,68 @@ OBJECT LIST SORTED BY ADDRESS
      free_ptr                                  1112       2       2       8   .bss        
      string_ready                              1114       2       2       3   .bss        
      index.1                                   1116       2       2       5   .bss        
-     write_index.2                             1118       2       2       4   .bss        
+     write_index.2                             1118       2       2       5   .bss        
      _heap_                                    111A     7D0    2000       2   HEAP_SEGMENT
      errno                                     18EA       2       2       2   .common     
      read_buffer                               18EC     100     256       2   .common     
      write_buffer                              19EC     100     256       2   .common     
      _Startup                                  C000       B      11       0   .init       
-     STRING....1                               C015       3       3       1   .rodata1    
-     STRING....2                               C018       3       3       1   .rodata1    
-     STRING.Invalid.Command..Fir.3             C01B      3A      58       1   .rodata1    
-     STRING.Invalid.Command..Fun.4             C055      2D      45       1   .rodata1    
-     STRING.Error..Flashing.Func.5             C082      6C     108       1   .rodata1    
-     STRING.Error..Invalid.Flash.6             C0EE      30      48       1   .rodata1    
-     STRING.Error..Invalid.Numbe.7             C11E      3E      62       1   .rodata1    
-     STRING.Error..Flashing.Patt.8             C15C      37      55       1   .rodata1    
-     STRING.Error..Invalid.Flash.9             C193      36      54       1   .rodata1    
-     STRING.Error..Wrong.number..10            C1C9      42      66       1   .rodata1    
-     STRING.Error..7.seg.can.onl.11            C20B      31      49       1   .rodata1    
-     STRING...12                               C23C       2       2       1   .rodata1    
-     STRING...13                               C23E       2       2       1   .rodata1    
-     STRING..cannot.be.displayed.14            C240      46      70       1   .rodata1    
-     _LCMP_P                                   C286      15      21       1   NON_BANKED  
-     _LNEG                                     C29B       D      13       2   NON_BANKED  
-     _LMULS16x32                               C2A8      1F      31       1   NON_BANKED  
-     _lDivMod                                  C2C7      BE     190       1   NON_BANKED  
-     _LDIVU                                    C385       E      14       1   NON_BANKED  
-     _ILSEXT                                   C393       7       7       2   NON_BANKED  
-     _CASE_CHECKED_BYTE                        C39A      14      20       1   NON_BANKED  
-     UnimplementedISR                          C3AE       2       2      61   NON_BANKED  
-     serial_ISR                                C3B0      2D      45       2   NON_BANKED  
+     STRING.Please.enter.a.tune..1             C015      2E      46       1   .rodata1    
+     STRING.Notes..C..C...D..D...2             C043      39      57       1   .rodata1    
+     STRING.Duration..1..whole.n.3             C07C      53      83       1   .rodata1    
+     STRING....1                               C0CF       3       3       1   .rodata1    
+     STRING....2                               C0D2       3       3       1   .rodata1    
+     STRING.Invalid.Command..Fir.3             C0D5      3A      58       1   .rodata1    
+     STRING.Invalid.Command..Fun.4             C10F      2D      45       1   .rodata1    
+     STRING.Error..Flashing.Func.5             C13C      6C     108       1   .rodata1    
+     STRING.Error..Invalid.Flash.6             C1A8      30      48       1   .rodata1    
+     STRING.Error..Invalid.Numbe.7             C1D8      3E      62       1   .rodata1    
+     STRING.Error..Flashing.Patt.8             C216      37      55       1   .rodata1    
+     STRING.Error..Invalid.Flash.9             C24D      36      54       1   .rodata1    
+     STRING.Error..Wrong.number..10            C283      42      66       1   .rodata1    
+     STRING.Error..7.seg.can.onl.11            C2C5      31      49       1   .rodata1    
+     STRING...12                               C2F6       2       2       1   .rodata1    
+     STRING...13                               C2F8       2       2       1   .rodata1    
+     STRING..cannot.be.displayed.14            C2FA      46      70       1   .rodata1    
+     _LCMP_P                                   C340      15      21       1   NON_BANKED  
+     _LNEG                                     C355       D      13       2   NON_BANKED  
+     _LMULS16x32                               C362      1F      31       1   NON_BANKED  
+     _lDivMod                                  C381      BE     190       1   NON_BANKED  
+     _LDIVU                                    C43F       E      14       1   NON_BANKED  
+     _ILSEXT                                   C44D       7       7       2   NON_BANKED  
+     _CASE_CHECKED_BYTE                        C454      14      20       2   NON_BANKED  
+     UnimplementedISR                          C468       2       2      61   NON_BANKED  
+     serial_ISR                                C46A      2D      45       2   NON_BANKED  
      _vect                                     FF80      7E     126       0   .abs_section_ff80
-     main                                    308000      B7     183       3   .text       
-     Init                                    3080B7      29      41       2   .text       
-     isdigit                                 3080E0       E      14       2   .text       
-     isspace                                 3080EE      17      23       4   .text       
-     toupper                                 308105      14      20       4   .text       
-     _heapcrash_                             308119       C      12       6   .text       
-     CheckCharWithBase                       308125      3A      58       2   .text       
-     _strtoul                                30815F     173     371      11   .text       
-     _strtol                                 3082D2      D6     214       4   .text       
-     strtol                                  3083A8      14      20      10   .text       
-     strlen                                  3083BC      14      20      14   .text       
-     strcpy                                  3083D0       D      13       2   .text       
-     strtok                                  3083DD      5E      94       4   .text       
-     malloc                                  30843B      A7     167       4   .text       
-     free                                    3084E2      C6     198       3   .text       
-     SerialInitialise                        3085A8      42      66       2   .text       
-     read_interrupt_init                     3085EA       8       8       2   .text       
-     SCI_read_char                           3085F2      44      68       2   .text       
-     get_new_command                         308636      17      23       2   .text       
-     print_to_serial                         30864D      21      33      26   .text       
-     SCI_write_char                          30866E      32      50       2   .text       
-     split_up_input                          3086A0      98     152       2   .text       
-     parse_command                           308738      86     134       2   .text       
-     flashing_function_parser                3087BE      B1     177       3   .text       
-     hex_to_seg_parser                       30886F      B9     185       3   .text       
-     flashing_function                       308928      A9     169       2   .text       
-     hex_to_seg                              3089D1     12C     300       2   .text       
-     delay_ms                                308AFD      24      36       8   .text       
-     init_TC7                                308B21      13      19       2   .text       
+     main                                    308000      FD     253       5   .text       
+     Init                                    3080FD      29      41       2   .text       
+     isdigit                                 308126       E      14       2   .text       
+     isspace                                 308134      17      23       4   .text       
+     toupper                                 30814B      14      20       4   .text       
+     _heapcrash_                             30815F       C      12       6   .text       
+     CheckCharWithBase                       30816B      3A      58       2   .text       
+     _strtoul                                3081A5     173     371      11   .text       
+     _strtol                                 308318      D6     214       4   .text       
+     strtol                                  3083EE      14      20      10   .text       
+     strlen                                  308402      14      20      14   .text       
+     strcpy                                  308416       D      13       2   .text       
+     strtok                                  308423      5E      94       4   .text       
+     malloc                                  308481      A7     167       4   .text       
+     free                                    308528      C6     198       5   .text       
+     SerialInitialise                        3085EE      42      66       2   .text       
+     read_interrupt_init                     308630       8       8       2   .text       
+     SCI_read_char                           308638      44      68       2   .text       
+     get_new_command                         30867C      17      23       4   .text       
+     print_to_serial                         308693      21      33      32   .text       
+     SCI_write_char                          3086B4      3D      61       2   .text       
+     split_up_input                          3086F1      98     152       4   .text       
+     parse_command                           308789      86     134       2   .text       
+     flashing_function_parser                30880F      B1     177       3   .text       
+     hex_to_seg_parser                       3088C0      B9     185       3   .text       
+     flashing_function                       308979      A9     169       2   .text       
+     hex_to_seg                              308A22     12C     300       2   .text       
+     delay_ms                                308B4E      24      36       8   .text       
+     init_TC7                                308B72      16      22       2   .text       
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -2050,16 +2058,16 @@ rtshc12.c.o (ansibi.lib):
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0xC3DD ---- SIZE       4 ---
+------- ROM-ADDRESS: 0xC497 ---- SIZE       4 ---
 Filling bytes inserted
  000C1101
-------- ROM-ADDRESS: 0xC3E1 ---- RAM-ADDRESS: 0x1101 ---- SIZE      11 ---
+------- ROM-ADDRESS: 0xC49B ---- RAM-ADDRESS: 0x1101 ---- SIZE      11 ---
 Name of initialized Object : sci_port:1
  D000D100D2 00D300D700 D4
-------- ROM-ADDRESS: 0xC3EC ---- RAM-ADDRESS: 0x110C ---- SIZE       1 ---
+------- ROM-ADDRESS: 0xC4A6 ---- RAM-ADDRESS: 0x110C ---- SIZE       1 ---
 Name of initialized Object : read_end_char
  0D
-------- ROM-ADDRESS: 0xC3ED ---- SIZE       2 ---
+------- ROM-ADDRESS: 0xC4A7 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -2074,7 +2082,9 @@ serial_ISR                USES sci_port write_buffer write_end_char
 _vect                     USES UnimplementedISR serial_ISR 
 main                      USES _COPCTL init_TC7 sci_port SerialInitialise 
                                 read_interrupt_init get_new_command split_up_input parse_command 
-                                strtol flashing_function hex_to_seg free main 
+                                main _CASE_CHECKED_BYTE strtol flashing_function 
+                                STRING.Please.enter.a.tune..1 print_to_serial STRING.Notes..C..C...D..D...2 
+                                STRING.Duration..1..whole.n.3 hex_to_seg free 
 Init                      USES _startupData 
 CheckCharWithBase         USES toupper 
 _strtoul                  USES _strtoul isspace _ILSEXT _LDIVU _LCMP_P 
@@ -2189,12 +2199,16 @@ DEPENDENCY TREE
  |  |     |  
  |  |     +- strlen               (see above)
  |  |        
+ |  +- _CASE_CHECKED_BYTE   (see above)
+ |  |  
  |  +- strtol               (see above)
  |  |  
  |  +- flashing_function   
  |  |  | 
  |  |  +- delay_ms            
  |  |       
+ |  +- print_to_serial      (see above)
+ |  |  
  |  +- hex_to_seg          
  |  |  | 
  |  |  +- strlen               (see above)
@@ -2228,5 +2242,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 8
-Total size of all blocks to be downloaded: 4003
+Total size of all blocks to be downloaded: 4273
 
