@@ -48,6 +48,7 @@ void main(void) {
   char *music_input;
   char **tune;
   int number_of_notes;
+  int timer;
   
 //---------------------------SETUP--------------------------- 
 
@@ -107,7 +108,7 @@ void main(void) {
   while (1){
     
     _FEED_COP();        //keep feeding dog
-    
+    timer = TCNT;
     
     //wait for the new command:
     read_string = get_new_command();

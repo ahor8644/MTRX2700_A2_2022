@@ -41,7 +41,8 @@ void flashing_function(int speed, int num_flashes, int pattern){
       _FEED_COP();      //feed the dog
       
       PORTB = 0xFF;
-      delay_ms(flash_duration);      
+      delay_ms(flash_duration);
+      
       PORTB = 0x00;
       delay_ms(flash_duration);    
     }

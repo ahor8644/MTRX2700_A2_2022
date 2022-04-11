@@ -3,10 +3,10 @@
 
 
 // function to initialise the timer
-void Init_TC7 (void);
+void Init_TC5 (void);
 
 // Timer interrupt definition
-__interrupt void TC7_ISR(void);
+__interrupt void TC5_ISR(void);
 
 
 #endif
