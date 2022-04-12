@@ -46,7 +46,9 @@ char *convert_to_tune(char *music_input, int *note_elements){
   
 }
 
-
+int find_next_note() {
+  
+}
 //GENERAL MUSIC PLAYER
 void music_player(void){
  
