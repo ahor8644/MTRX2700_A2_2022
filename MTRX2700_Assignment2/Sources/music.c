@@ -46,11 +46,12 @@ char *convert_to_tune(char *music_input, int *note_elements){
   
 }
 
-int find_next_note(char * tune, int i) {
-  //when error in note syntax is found iterates through array to find index of next valid note
-  //returns 1 on success, 0 when valid note not found
-    for (int j = i; j < sizeof(tune); j++){
-        if (sizeof(tune) - j < 4){
+int find_next_note(char * tune,int tune_length,int * i) {
+  //iterates through array to find index of next valid note
+  //on sucess, returns 1 and sets the value at pointer * i to the index of the next valid note
+  //returns 0 when valid note not found
+    for (int j = *i; j < tune_length; j++){
+        if (tune_length - j < 4){
           return 0; //immediately returns 0 if not enough elements in array to contain a full note
         }
         
@@ -69,12 +70,13 @@ int find_next_note(char * tune, int i) {
             continue;
         }
         
-        //checking for octave
+        //checking for valid octave
         else if (!(tune[j+3] >=2 || tune[j+3] <= 6)){
             continue;
         }
 
         else{
+            * i = j;
             return 1;
         }
     }
@@ -202,12 +204,10 @@ void music_player(void){
       
       //if converting/parsing failed: find the next note
       else {
-        if (find_next_note(tune, &i)){
-          
+        if (find_next_note(tune,sizeof(tune), &i)){          
           //once you have found the index of the NEXT char, do this: *i = index; -->update the for loop 'i' with that index
           //return 1 if a next note was found and 0 if you couldnt find another note
-          
-          ;;
+          *i = index;
         }
         //if no more notes/pitches, the tune is over! 
         else {
