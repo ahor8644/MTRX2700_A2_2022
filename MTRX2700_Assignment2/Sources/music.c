@@ -48,45 +48,47 @@ char *convert_to_tune(char *music_input, int *note_elements){
 
 int find_next_note(char * tune, int i) {
   //when error in note syntax is found iterates through array to find index of next valid note
-  //returns 1 on success or 0 when valid note not found at input index
+  //returns 1 on success, 0 when valid note not found
 
-  if (sizeof(char) - i < 4){
-    return 0; //immediately returns 0 if not enough elements in array to contain a full note
+  for (int i = 0; i < sizeof(tune); i++){
+    
+    if (sizeof(tune) - i < 4){
+      return 0; //immediately returns 0 if not enough elements in array to contain a full note
+    }
+    
+    //checking for valid note input 
+    if (tune[i] >= 65 || tune[i] <= 71 || tune[i] == 82){
+      ;;
+    } 
+    else{
+      continue;
+    }
+    
+    //checking for valid accidental
+    if (tune[i+1] == 110 || tune[i+1] == 35){
+      ;;
+    } 
+    else{
+      continue;
+    }
+    
+    //checking for valid note time
+    if (tune[i+2] >= 1 || tune[i+2] <= 5){
+      ;;
+    } 
+    else{
+      continue;
+    }
+    
+    //checking for octave
+    if (tune[i+3] >=2 || tune[i+3] <= 6){
+      ;;
+    } 
+    else{
+      continue;
+    }
   }
-  
-  //checking for valid note input 
-  if (tune[i] >= 65 || tune[i] <= 71 || tune[i] == 82){
-    ;;
-  } 
-  else{
-    return 0;
-  }
-  
-  //checking for valid accidental
-  if (tune[i+1] == 110 || tune[i+1] == 35){
-    ;;
-  } 
-  else{
-    return 0;
-  }
-  
-  //checking for valid note time
-  if (tune[i+2] >= 1 || tune[i+2] <= 5){
-    ;;
-  } 
-  else{
-    return 0;
-  }
-  
-  //checking for octave
-  if (tune[i+3] >=2 || tune[i+3] <= 6){
-    ;;
-  } 
-  else{
-    return 0;
-  }
-  
-  return 1;
+  return 0;
 }
 
 //GENERAL MUSIC PLAYER
@@ -210,14 +212,12 @@ void music_player(void){
       
       //if converting/parsing failed: find the next note
       else {
-      
-        //if a next note is found --> update i to that note and continue
-        if (1 == find_next_note(tune, &i)){
+        if (find_next_note(tune, &i)){
           
           //once you have found the index of the NEXT char, do this: *i = index; -->update the for loop 'i' with that index
           //return 1 if a next note was found and 0 if you couldnt find another note
           
-          continue;
+          ;;
         }
         //if no more notes/pitches, the tune is over! 
         else {
