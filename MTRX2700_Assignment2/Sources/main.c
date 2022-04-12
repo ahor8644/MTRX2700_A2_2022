@@ -1,10 +1,8 @@
 #include <hidef.h>      /* common defines and macros */
 #include "derivative.h"      /* derivative-specific definitions */
 
-
 #include <stdio.h> 
 #include <stdlib.h>
-
 
 #include "serial.h"
 #include "command_parsing.h"
@@ -58,14 +56,12 @@ void main(void) {
   //setting up read interrupt;
   read_interrupt_init(&sci_port);
  
- 
- 
-
 	EnableInterrupts;
 
 
  
 //-----------------------FUNCTION LOOP-----------------------  
+  //Loop forever and keep asking for commands
   while (1){
     
     _FEED_COP();        //keep feeding dog
@@ -77,32 +73,41 @@ void main(void) {
     print_to_serial(&sci_port, "Music Function:    2 | Parameters: NONE\n");
     print_to_serial(&sci_port, "HEX2SEG Function:  3 | Parameters: a) 4 digit HEX number. \n\n");
      
+    //reading in the input from serial, updated when 'read_end_char' (\r) is pressed.
     read_string = get_new_command();
+    
+    //splitting up read string into an array of parameter strings (getting rid of spaces and commas)
     command = split_up_input(read_string, &number_of_parameters);
      
     
-    //command parsed successfully:
+    //parsing command (both general and function specific parameters):
+    //upon success (1), get the function number and call the corresponding function number
     if (1 == parse_command(&sci_port, command, number_of_functions, number_of_parameters)){
       
-      //getting function choice
+      //getting function number/choice
       func_num = atoi(command[1]);
       
       switch (func_num){
         
+        //Flashing Function (1)
         case FLASHING_FUNC:
-          speed = atoi(command[2]);       //speed of flash (10ms inc.)
-          num_flashes = atoi(command[3]);    //duration in seconds
-          pattern = command[4][0];        //A = normal, B = wave
+          //getting variables from parameters
+          speed = atoi(command[2]);
+          num_flashes = atoi(command[3]);
+          pattern = command[4][0];
           
           print_to_serial(&sci_port, "\nEntering FLASHING function...\n\n");
           flashing_function(speed, num_flashes, pattern);
           break;
-          
+        
+        //Music Function (2)  
         case MUSIC_FUNC:
           print_to_serial(&sci_port, "\nEntering MUSIC function...\n\n");
+          //has no parameters - asks for a seperate input for the music
           music_player();
           break;
         
+        //Hex to 7-seg Function (4)
         case HEX2SEG_FUNC:
           num_to_display = command[2];
           print_to_serial(&sci_port, "\nEntering HEX2SEG function...\n\n");
