@@ -71,7 +71,7 @@ int find_next_note(char * tune,int tune_length,int * i) {
         }
         
         //checking for valid octave
-        else if (!(tune[j+3] >=2 || tune[j+3] <= 6)){
+        else if (!(tune[j+3] >= 2 || tune[j+3] <= 6)){
             continue;
         }
 
