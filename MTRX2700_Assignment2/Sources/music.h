@@ -2,20 +2,29 @@
 #define MUSIC_H
 
 
-
-//setup output compare for channel 5:
-//enable interrupt for output compare (do this in the music function)
-//make a certain frequency by using a toggle period
-//make an overall time by finding how many loops/counts you have to do with the given period for the time  
-
+#define HALF_NOTE '2'
+#define QUARTER_NOTE '3'
+#define EIGHTH_NOTE '4'
+#define SIXTEENTH_NOTE '5'
 
 
-char *convert_to_tune(char *music_input, int *note_elements);
+
 
 void music_player(void);
 
+int parse_note(char pitch, char accidental, char duration, char octave);
 
 
+void play_note(int frequency, long int length_mcs);
+
+
+int get_note_frequency(char pitch, char accidental, char octave);
+
+long int get_note_length_mcs(int bpm, char duration);
+
+int find_next_note(char *tune, int tune_elements, int *i);
+ 
+char *str_to_ch_arr(char *music_input, int *note_elements);
 
 __interrupt void music_isr(void);
 
