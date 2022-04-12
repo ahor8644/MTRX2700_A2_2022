@@ -1,6 +1,12 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+/*
+  Module for the implementation functions for the non-music functions
+  Flashing Lights and Writing a HEX number to the 7-segs.
+  Defines macros to be used for 7-seg codes and register masks predominantly.
+*/
+
 
 //Function choices:
 #define FLASHING_FUNC 1
@@ -17,8 +23,9 @@
 #define SEVEN_LED 0b01000000
 #define EIGHT_LED 0b10000000
 
+#define LAST_LED 7
 
-
+//HEX2SEG:
 //7-seg display codes:
 #define ZERO_SEG 0x3F
 #define ONE_SEG 0x06
@@ -38,14 +45,18 @@
 #define HEX_F_SEG 0x71
 #define BLNK_SEG 0x00
 
+//PTP masks:
+#define PTP_SEG_1 0b11111110 
+#define PTP_SEG_2 0b11111101
+#define PTP_SEG_3 0b11111011
+#define PTP_SEG_4 0b11110111
+
+#define MAX_HEX_DIGITS 4
+
 //Function 1: Flashing LEDs
 void flashing_function(int speed, int num_flashes, int pattern);
 
 //Function 3: Writing hex number to 7-seg
 void hex_to_seg(char *num_to_display);
-
-
-
-
 
 #endif
