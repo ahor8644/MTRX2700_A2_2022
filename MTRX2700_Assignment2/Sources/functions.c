@@ -1,4 +1,5 @@
 #include "functions.h"
+#include "timer.h"
 #include "derivative.h"
 
 #include <string.h>
@@ -148,31 +149,6 @@ void hex_to_seg(char *num_to_display){
  
  //Blank the display after 1ms
  PORTB = BLNK_SEG; 
-}
-
-
-
-void delay_ms(int ms){
-  /*
-    This function uses the timer and the output compare channel 7
-    to create a delay of ms*1 milliseconds (nm loops of 375 timer
-    counts @64P).
-  */
-  int i;
-  
-  //Loop 1ms timer delay 'ms' times
-  for (i = 0; i < ms; i++){
-    
-    TC7 = TCNT + ONEMS;
-    
-    //keep looping until output compare successful (1ms has passed)
-    while (!TFLG1_C7F){
-    }
-    
-    //reset output compare flag
-    TFLG1_C7F = 1;
-  }
-
 }
   
     
