@@ -46,9 +46,49 @@ char *convert_to_tune(char *music_input, int *note_elements){
   
 }
 
-int find_next_note() {
+int find_next_note(char * tune, int i) {
+  //when error in note syntax is found iterates through array to find index of next valid note
+  //returns 1 on success or 0 when valid note not found at input index
+
+  if (sizeof(char) - i < 4){
+    return 0; //immediately returns 0 if not enough elements in array to contain a full note
+  }
   
+  //checking for valid note input 
+  if (tune[i] >= 65 || tune[i] <= 71 || tune[i] == 82){
+    continue;
+  } 
+  else{
+    return 0;
+  }
+  
+  //checking for valid accidental
+  if (tune[i+1] == 110 || tune[i+1] == 35){
+    continue;
+  } 
+  else{
+    return 0;
+  }
+  
+  //checking for valid note time
+  if (tune[i+2] >= 1 || tune[i+2] <= 5){
+    continue;
+  } 
+  else{
+    return 0;
+  }
+  
+  //checking for octave
+  if (tune[i+3] >=2 || tune[i+3] <= 6){
+    continue;
+  } 
+  else{
+    return 0;
+  }
+  
+  return 1;
 }
+
 //GENERAL MUSIC PLAYER
 void music_player(void){
  
