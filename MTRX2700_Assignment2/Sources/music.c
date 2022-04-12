@@ -332,11 +332,11 @@ int get_note_frequency(char pitch, char accidental, char octave){
  
   /*
     This function takes in the 1) pitch, 2) accidental, and 3) octave
-    of a note 
+    of a note and finds the corresponding frequency of the note given
+    a known array of base frequencies 'middle_freqs' 
   
   
   */
- 
   int freq;
   
   //frequencies for A, B, C, D, E, F, G
@@ -348,41 +348,46 @@ int get_note_frequency(char pitch, char accidental, char octave){
   //get index corresponding to note by subtracting 'A' from it
   int pitch_index = pitch - 'A';
   
-  
+  //get the octave 4 frequency of the pitch
   freq = middle_freqs[pitch_index];
   
-  //adding on accidentals for given pitch
+  //add on accidentals for given pitch
   if (accidental == '#'){
-    
     freq += accidental_addons[pitch_index];  
   }
   
-  //accounting for octaves:
+  //account for octave:
   switch (octave){
-    
-    case '2':
+    case OCTAVE_2:  //two down from middle = /4
       freq /= 4;
       break;
-    case '3':
+    case OCTAVE_3:  //one down from middle = /2
       freq /= 2;
       break;
-    case '5':
+    case OCTAVE_5:  //one up from middle = *2
       freq *= 2;
       break;
-    case '6':
+    case OCTAVE_6:  //two up from middle = *4
       freq *= 4;
       break;
     default:
       break;
   }
-
+  //return frequency after pitch, accidental and octave accounted for
   return freq;
 }
 
 
-
+//getting length of a note
 long int get_note_length_mcs(int bpm, char duration){
+ /*
+   This function takes in 1) the BPM of the tune and 2) a given note's 'duration'
+   /time signature to work out the time in microseconds of a requested note which
+   is returned from the function. 
+ */
  
+ //need the length of the note and a whole note for reference
+ //must be long ints as need time in microseconds for better precision (no floating points)
  long int length_mcs, whole_note_mcs;
  
  
@@ -390,8 +395,8 @@ long int get_note_length_mcs(int bpm, char duration){
  //whole note length = (1min/bpm)*4 --> where time is in microseconds
  whole_note_mcs = ((60 * 1000000)/bpm)*4;
  
+ //dividing whole note time based on the note's duration
  switch (duration){
-  
   case HALF_NOTE: //half note
     length_mcs = whole_note_mcs/2;
     break;
@@ -408,7 +413,7 @@ long int get_note_length_mcs(int bpm, char duration){
     length_mcs = whole_note_mcs;
     break;
  }
-
+ //returning note length
  return length_mcs;  
 }
 
@@ -416,7 +421,6 @@ long int get_note_length_mcs(int bpm, char duration){
 
 
 int find_next_note(char *tune, int tune_elements, int *i){
- 
   /*
     This function is called when a note element (pitch, acc., dur. octave)
     is invalid (parsing failed) and it finds the position in the string
@@ -430,11 +434,10 @@ int find_next_note(char *tune, int tune_elements, int *i){
       - 'tune_elements' - number of elements in the tune array.
       - 'i' - the index of the note that failed to be played.  
   */ 
- 
+  
+  //index
   int j; 
-  
-  
-  
+
   //start searching from the current place in the tune (i)
   //loop through each element and check if it is a note;
   for (j = *i; j < tune_elements; j++){
@@ -459,29 +462,32 @@ int find_next_note(char *tune, int tune_elements, int *i){
 
 //converting a string to char_arr
 char *str_to_ch_arr(char *music_input, int *note_elements){
-
+  /*
+    This function takes in 1) a string and 2) the number of elements in the string
+    and copies the input string into a dynamically created array WITHOUT spaces ' ',
+    commas ' ' or the read_end_char (e.g. '\r').
+  */
+  //temporary pointer for in-function allocation
   char *temp;
+  //need an expand number for reallocing
   int expand_num = 0;
-  
-  volatile char tester;
 
   int i;
   
   //go through input, skipping spaces and commas and storing values
   for (i = 0; i < strlen(music_input); i++){
     
+    //if the current char in input string is a comma, space or read end char, continue
     if ((music_input[i] == ' ') || (music_input[i] == ',') || (music_input[i] == read_end_char)){
-      
       continue;
-    } 
+    }
+    //if a desired character for transfer, expand destination array and store 
     else {
-    
-      //expand array
+      //expand array using realloc
       expand_num++;
       temp = (char *)realloc(temp, expand_num*sizeof(char));
       
-      tester = music_input[i];
-      
+      //copy char into expanded spot
       temp[expand_num-1] = music_input[i];
     }
   }
@@ -493,12 +499,26 @@ char *str_to_ch_arr(char *music_input, int *note_elements){
   //keeping track of how many chars/note elements in the array
   *note_elements = expand_num;
   
+  //returning a pointer to the dynamically allocated array
   return temp;
   
 }
 
 #pragma CODE_SEG __NEAR_SEG NON_BANKED /* Interrupt section for this module. Placement will be in NON_BANKED area. */
 __interrupt void music_isr(void){
+  /*
+    This interrupt service routine responds to a successful output compare for channel 5.
+    It is initially caused by the play_note() function, after the timer interrupt is enabled
+    and TC5 is set to be current time + toggle_period.
+    
+    Every interrupt, this function toggles the PT5/speaker output, updates a counter keeping track
+    of the number of toggles/interrupts and adds toggle_period more worth of counts to the output
+    compare - setting up the next toggle/interrupt.
+    
+    When the interrupt counter is equal to the max toggle_counter (note time is up), the isr counter
+    is reset, PTT/speaker output is set to LOW and the next note flag is set to 1. 
+  */
+  
   
   //Check isr counter is equal to desired toggle counter (set according to note duration)
   if (isr_counter == toggle_counter) {      //time for current note is up:
@@ -515,6 +535,7 @@ __interrupt void music_isr(void){
     //toggle output by toggling OL5
     PTT ^= PTT_PTT5_MASK;
     
+    //add current count + toggle_period * 3(counts in 1mcs @8P) to output compare
     TC5 = TCNT + (toggle_period*3);     //fast flag automatically resets C5F
   }
 }
