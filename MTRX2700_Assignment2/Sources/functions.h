@@ -2,6 +2,11 @@
 #define FUNCTIONS_H
 
 
+//Function choices:
+#define FLASHING_FUNC 1
+#define MUSIC_FUNC 2
+#define HEX2SEG_FUNC 3
+
 //Flashing Function LED nums:
 #define ONE_LED 0b00000001
 #define TWO_LED 0b00000010
@@ -33,17 +38,11 @@
 #define HEX_F_SEG 0x71
 #define BLNK_SEG 0x00
 
-#define ONEMS 375   //one ms is 375 counts at 64 prescaler
-
 //Function 1: Flashing LEDs
 void flashing_function(int speed, int num_flashes, int pattern);
 
 //Function 3: Writing hex number to 7-seg
 void hex_to_seg(char *num_to_display);
-
-//Delay function (in 1ms increments)
-void delay_ms(int ms);
-
 
 
 
