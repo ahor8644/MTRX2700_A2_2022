@@ -11,69 +11,6 @@
   //is_valid_command = parse_command(char **split_up_string, int num_functions, char command_indicator);  
   //    inside here write functions   
 
-
-
-char **split_up_input(char *input_string, int *number_of_parameters){
-  /*
-    This function splits the char array inputted via serial
-    into an array of strings, where each command parameter is
-    its own element.
-  */
-  
-  int num_tokens = 1;
-  int i;
-  char **split_string_array;
-  char *token;
-  
-  //Firstly, go through and change all spaces to commas
-  for (i = 0; i < strlen(input_string); i++){
-  
-    if (input_string[i] == ' '){
-      
-      input_string[i] = ',';
-    } 
-    //if CR found, change it to NULL terminator then break
-    else if (read_end_char == input_string[i]){  //SHOULD BE VARIABLE - read_end_char
-      
-      input_string[i] = '\0';
-      break;
-    } 
-    //commas indicate how many tokens to split up
-    else if (',' == input_string[i]){
-      num_tokens++;
-    }
-    else{
-    } 
-  }
-  
-  //store number of tokens in num_params variable in main
-  *number_of_parameters = num_tokens;
-  
-  
-  //making a 2d array to fit the broken up tokens/param strings
-  split_string_array = (char **)malloc(num_tokens*sizeof(char *));
-  
-  
-  //using STRTOK() to split up string and place inside 2d array
-  token = strtok(input_string, ",,");
-  
-  for (i = 0; i < num_tokens; i++){
-    
-    split_string_array[i] = (char *)malloc(strlen(token)*sizeof(char));
-    split_string_array[i] = token;
-    
-    token = strtok(NULL, ",,");  
-    
-  }
-       
-  return split_string_array;
-   
-}
-
-
-
-
-
 int parse_command(SerialPort *serial_port, char **command, int num_funcs, int num_params){
   /*
     This function takes in a split up command (an array of string tokens
@@ -258,4 +195,78 @@ int hex_to_seg_parser(SerialPort *serial_port, char **command, int num_params){
   
   return is_valid;
   
+}
+
+
+char **split_up_input(char *input_string, int *number_of_parameters){
+  /*
+    This function splits the char array inputted via serial
+    into an array of strings, where each command parameter is
+    its own element.
+  */
+  
+  int num_tokens = 1;
+  int i;
+  char **split_string_array;
+  char *token;
+  
+  //Firstly, go through and change all spaces to commas
+  for (i = 0; i < strlen(input_string); i++){
+  
+    if (input_string[i] == ' '){
+      
+      input_string[i] = ',';
+    } 
+    //if CR found, change it to NULL terminator then break
+    else if (read_end_char == input_string[i]){  //SHOULD BE VARIABLE - read_end_char
+      
+      input_string[i] = '\0';
+      break;
+    } 
+    //commas indicate how many tokens to split up
+    else if (',' == input_string[i]){
+      num_tokens++;
+    }
+    else{
+    } 
+  }
+  
+  //store number of tokens in num_params variable in main
+  *number_of_parameters = num_tokens;
+  
+  
+  //making a 2d array to fit the broken up tokens/param strings
+  split_string_array = (char **)malloc(num_tokens*sizeof(char *));
+  
+  
+  //using STRTOK() to split up string and place inside 2d array
+  token = strtok(input_string, ",,");
+  
+  for (i = 0; i < num_tokens; i++){
+    
+    split_string_array[i] = (char *)malloc(strlen(token)*sizeof(char));
+    split_string_array[i] = token;
+    
+    token = strtok(NULL, ",,");  
+    
+  }
+       
+  return split_string_array;
+   
+}
+
+
+void free_str_array(char **str_arr, int num_elements){
+  
+  int i;
+  
+  for (i = 0; i < num_elements; i++){
+    
+    //free each string element
+    free(str_arr[i]);
+  }
+  
+  //free overall array
+  free(str_arr);
+     
 }
