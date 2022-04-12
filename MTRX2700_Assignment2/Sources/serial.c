@@ -11,8 +11,8 @@
 
 
 //File-Scope variables TO BE USED BY ISR (that isnt needed in main):
-char read_buffer[256];
-char write_buffer[256];
+char read_buffer[512];
+char write_buffer[512];
 int string_ready = 0;
 
 
