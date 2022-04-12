@@ -49,46 +49,36 @@ char *convert_to_tune(char *music_input, int *note_elements){
 int find_next_note(char * tune, int i) {
   //when error in note syntax is found iterates through array to find index of next valid note
   //returns 1 on success, 0 when valid note not found
+    for (int j = i; j < sizeof(tune); j++){
+        if (sizeof(tune) - j < 4){
+          return 0; //immediately returns 0 if not enough elements in array to contain a full note
+        }
+        
+        //checking for valid note input 
+        if (!(tune[j] >= 65 || tune[j] <= 71 || tune[j] == 82)){
+            continue;
+        }
+        
+        //checking for valid accidental
+        else if (!(tune[j+1] == 110 || tune[j+1] == 35)){
+            continue;
+        }
+        
+        //checking for valid note time
+        else if (!(tune[j+2] >= 1 || tune[j+2] <= 5)){
+            continue;
+        }
+        
+        //checking for octave
+        else if (!(tune[j+3] >=2 || tune[j+3] <= 6)){
+            continue;
+        }
 
-  for (int i = 0; i < sizeof(tune); i++){
-    
-    if (sizeof(tune) - i < 4){
-      return 0; //immediately returns 0 if not enough elements in array to contain a full note
+        else{
+            return 1;
+        }
     }
-    
-    //checking for valid note input 
-    if (tune[i] >= 65 || tune[i] <= 71 || tune[i] == 82){
-      ;;
-    } 
-    else{
-      continue;
-    }
-    
-    //checking for valid accidental
-    if (tune[i+1] == 110 || tune[i+1] == 35){
-      ;;
-    } 
-    else{
-      continue;
-    }
-    
-    //checking for valid note time
-    if (tune[i+2] >= 1 || tune[i+2] <= 5){
-      ;;
-    } 
-    else{
-      continue;
-    }
-    
-    //checking for octave
-    if (tune[i+3] >=2 || tune[i+3] <= 6){
-      ;;
-    } 
-    else{
-      continue;
-    }
-  }
-  return 0;
+    return 0; 
 }
 
 //GENERAL MUSIC PLAYER
