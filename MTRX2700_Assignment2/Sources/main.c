@@ -46,13 +46,11 @@ void main(void) {
   
 //---------------------------SETUP--------------------------- 
 
-  //Making the watchdog timer longer (NOW 2^24):
-  //COPCTL |= 0b01000111;
-  COPCTL = 0x00;
-      
+  //turning off watchdog timer
+  COPCTL = 0x00;    
  
   //Initialising the timer and output compare CH7:
-  init_TC7();
+  init_timer();
   
   //initialising the SCI
   SerialInitialise(BAUD_9600, &sci_port);
@@ -72,41 +70,42 @@ void main(void) {
     
     _FEED_COP();        //keep feeding dog
     
-    
     //wait for the new command:
-    print_to_serial(&sci_port, "Please enter a command in the form '`, function number, funcparam1, funcparam2, ...\n");
+    print_to_serial(&sci_port, "\nPlease enter a command in the form  -- '`, function number, funcparam1, funcparam2, ...' --\n\n");
+    print_to_serial(&sci_port, "\nFunctions:\n");
+    print_to_serial(&sci_port, "Flashing Function: 1 | Parameters: a) Speed (1-5), b) Number of Flashes (1-100), c) Pattern (A/B).\n");
+    print_to_serial(&sci_port, "Music Function:    2 | Parameters: NONE\n");
+    print_to_serial(&sci_port, "HEX2SEG Function:  3 | Parameters: a) 4 digit HEX number. \n\n");
+     
     read_string = get_new_command();
     command = split_up_input(read_string, &number_of_parameters);
+     
     
-    
-    
-    
+    //command parsed successfully:
     if (1 == parse_command(&sci_port, command, number_of_functions, number_of_parameters)){
-
-      //upon successful command, function number will be updated and corresponding function called
-      //all other times, func_num = 0 (continue infinite loop);
       
+      //getting function choice
       func_num = atoi(command[1]);
       
       switch (func_num){
         
-        case 1:
-          
+        case FLASHING_FUNC:
           speed = atoi(command[2]);       //speed of flash (10ms inc.)
           num_flashes = atoi(command[3]);    //duration in seconds
           pattern = command[4][0];        //A = normal, B = wave
           
+          print_to_serial(&sci_port, "\nEntering FLASHING function...\n\n");
           flashing_function(speed, num_flashes, pattern);
           break;
           
-        case 2:  //MUSIC PLAYER
-        
+        case MUSIC_FUNC:
+          print_to_serial(&sci_port, "\nEntering MUSIC function...\n\n");
           music_player();
           break;
         
-        case 3:
-          
+        case HEX2SEG_FUNC:
           num_to_display = command[2];
+          print_to_serial(&sci_port, "\nEntering HEX2SEG function...\n\n");
           hex_to_seg(num_to_display);
           break;
           
@@ -116,9 +115,8 @@ void main(void) {
       
     }
       
-    //FREE INDIVIDUAL ELEMENTS IN COMMAND TOO
-    free(command);
-    
+    //freeing command (2d array)
+    free_str_array(command, number_of_parameters);
     continue;
   }
     
