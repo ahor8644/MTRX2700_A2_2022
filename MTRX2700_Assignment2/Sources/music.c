@@ -56,7 +56,7 @@ int find_next_note(char * tune,int tune_length,int * i) {
         }
         
         //checking for valid note input 
-        if (!(tune[j] >= 65 || tune[j] <= 71 || tune[j] == 82)){
+        if (!(tune[j] >= 65 && tune[j] <= 71 || tune[j] == 82)){
             continue;
         }
         
@@ -66,12 +66,12 @@ int find_next_note(char * tune,int tune_length,int * i) {
         }
         
         //checking for valid note time
-        else if (!(tune[j+2] >= 1 || tune[j+2] <= 5)){
+        else if (!(tune[j+2] >= 49 && tune[j+2] <= 53)){
             continue;
         }
         
         //checking for valid octave
-        else if (!(tune[j+3] >= 2 || tune[j+3] <= 6)){
+        else if (!(tune[j+3] >= 50 && tune[j+3] <= 54)){
             continue;
         }
 
