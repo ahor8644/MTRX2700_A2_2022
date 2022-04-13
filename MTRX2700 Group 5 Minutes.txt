@@ -1,0 +1,28 @@
+﻿Week 6 Minutes
+30/3/2022
+ 
+Present: Joel Lummis, Angus Hortan, Michael Mei
+Meeting Purpose: Introductions, reading assessment, making workflow plan, designate assessment tasks to team members
+Regular Items: Update on task progress: 
+New Items:  individual tasks assigned, deadlines discussed. Started brainstorming on how to code music module. 
+Next Meeting: 6/4/2022 (Lab time)
+
+
+Week 7 Minutes
+6/4/2022
+Present: Joel Lummis, Angus Hortan, Michael Mei
+Meeting Purpose: Working on tasks, testing modular code compatibility (ensure functions work together, redistributing workload. 
+Previous Actions: designate assessment tasks to team members
+Regular Items: Update on task progress: Task 1 Complete (Angus)
+New Items: Decided on how to code music module        
+Next Meeting: 23/3/2022 (Lab time)
+
+
+Week 8 Minutes
+11/4/2022
+Present: Joel Lummis, Angus Hortan, Michael Mei
+Meeting Purpose: Testing functionality of code on microcontroller
+Previous Actions: completed note playing function, completed function selection from serial
+Regular Items: Update on task progress: Task 2 Complete (Angus), Task 3 Complete (Angus, Joel, Micheal), README complete.
+New Items: Complete assessment. Discuss how to answer discussion points. Check code and debug any errors.
+Next Meeting: 23/3/2022 (Lab time)
