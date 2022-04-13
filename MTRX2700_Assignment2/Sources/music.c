@@ -76,7 +76,11 @@ void music_player(void){
    bpm = atoi(bpm_clean);
    free(bpm_clean);
    bpm_input = NULL;
-   if (bpm == 0){ //atoi returns 0 upon failure (invalid BPM input)
+   
+  //--MANUAL INPUT--//
+  bpm = 120;
+  
+  if (bpm == 0){ //atoi returns 0 upon failure (invalid BPM input)
     print_to_serial(&sci_port, "Invalid BPM!\n");
     continue;
    }
@@ -114,7 +118,7 @@ void music_player(void){
    tune = str_to_ch_arr(music_input, &total_note_elements);
 
    //getting and printing the time (in ms) that it will take for the song to be played (accounting for bad notes)
-   display_tune_time(tune, bpm, total_note_elements);
+   //display_tune_time(tune, bpm, total_note_elements);
    
    
    //PLAYING SONG: for each note in the tune:  
@@ -169,7 +173,8 @@ void music_player(void){
  }
 }
 
-void display_tune_time(char *tune, int bpm, int num_elements){
+
+/*void display_tune_time(char *tune, int bpm, int num_elements){
 
 
   //find each note, parse it, if valid, convert duration to time, add it to a running total, display the total at the end 
@@ -179,7 +184,7 @@ void display_tune_time(char *tune, int bpm, int num_elements){
   long int total_time_mcs = 0;
   long int note_time_mcs;
   //number of bars the song has
-  int num_bars;
+  long int num_bars;
   
   char *total_time;
   char *total_bars;
@@ -216,18 +221,16 @@ void display_tune_time(char *tune, int bpm, int num_elements){
     }    
   }
   
-  /*//all valid notes have been added, convert total to bars
+  //all valid notes have been added, convert total to bars
   //microseconds for one bar/whole note = ((60*1000000)/bpm)*4
   //thus number of bars = time_total_mcs/(((60*1000000)/bpm)*4)
   num_bars = total_time_mcs/(((60*1000000)/bpm)*4);
   
   //CONVERTING TO DIGITS
   
+  total_time = convert_to_digits_str(total_time_mcs);
+  total_bars = convert_to_digits_str(num_bars);
   
-  
-  //converting to strings using ltoa(int, str, base)
-  ltoa(total_time_mcs, total_time, 10);
-  ltoa(num_bars, total_bars, 10);
   
   //PRINTING:
   print_to_serial(&sci_port, "Time of tune: ");
@@ -235,9 +238,14 @@ void display_tune_time(char *tune, int bpm, int num_elements){
   print_to_serial(&sci_port, "microseconds or ");
   print_to_serial(&sci_port, total_bars);
   print_to_serial(&sci_port, "bars.\n");
-  */
+  
+  //free char arrays holding digits
+  free(total_time);
+  free(total_bars);
   
 }
+*/
+
 
 
 void play_note(int frequency, long int length_mcs){
@@ -503,6 +511,51 @@ char *str_to_ch_arr(char *music_input, int *note_elements){
   return temp;
   
 }
+
+/*//function used in diaplying the total time
+char *convert_to_digits_str(long int num_to_convert){
+ 
+  //find number of digits in the number
+  //keep multipling 10
+  int digits = 1;
+  long volatile int reference_num = 10;
+  int i;
+  char *digit_ch_arr;
+  volatile int test_dig;
+  
+  //getting number of digits
+  while (num_to_convert > reference_num){
+    digits++;
+    reference_num *= 10;
+  }
+  
+  //make a char array to hold digits that is 'digits+1' elements large (1 extra for '\0')
+  digit_ch_arr = (char *)malloc((digits+1)*sizeof(char));
+  
+  
+  //set null terminator
+  digit_ch_arr[digits] = '\0';
+  
+  
+  //get each digit and store using the %10 method
+  for (i = 0; i < digits; i++){
+    //reverse order digits from modulo 10
+    //- '0' makes them into corresponding digit
+    
+    test_dig = (num_to_convert%10); 
+    
+    digit_ch_arr[digits-1] = test_dig - '0';
+    
+    //divide num_to_convert by 10 and repeat:
+    num_to_convert /= 10;   
+  }
+  
+  
+  //now char array filled with correct order digit chars - return pointer to this array
+  return digit_ch_arr; 
+}
+*/
+
 
 #pragma CODE_SEG __NEAR_SEG NON_BANKED /* Interrupt section for this module. Placement will be in NON_BANKED area. */
 __interrupt void music_isr(void){
