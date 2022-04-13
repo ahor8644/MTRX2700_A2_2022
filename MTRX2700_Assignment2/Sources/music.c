@@ -544,7 +544,7 @@ char *convert_to_digits_str(long int num_to_convert){
     
     test_dig = (num_to_convert%10); 
     
-    digit_ch_arr[digits-1] = test_dig - '0';
+    digit_ch_arr[digits-i] = test_dig - '0';
     
     //divide num_to_convert by 10 and repeat:
     num_to_convert /= 10;   
