@@ -117,6 +117,8 @@ void SCI_read_char(SerialPort *serial_port, char buffer[], char end_read_indicat
  //LAST CHARACTER:
  if (read_char == end_read_indicator){
   
+  //add null terminator to the position after the read end char:
+  buffer[index+1] = '\0';
   //reset index for next string and indicate that string has finished.
   index = 0;
   string_ready = 1;       //set the string ready flag so that get_new_command() knows to read
