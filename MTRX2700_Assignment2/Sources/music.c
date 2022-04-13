@@ -104,10 +104,13 @@ void music_player(void){
    //music_input = "E,n,3,4,D,n,3,4,C,n,3,4,D,n,3,4,E,n,3,4,E,n,3,4,E,n,2,4,C,n,3,4,G,n,3,4,G,n,2,4,E,n,3,4,D,n,3,4,C,n,3,4,D,n,3,4,E,n,3,4,E,n,3,4,E,n,3,4,E,n,3,4,D,n,3,4,D,n,3,4,E,n,3,4,D,n,3,4,C,n,2,4,R,n,3,4,D,n,3,4,E,n,3,4,D,n,3,4,C,n,3,4,D,n,3,4,E,n,3,4,E,n,3,4,E,n,2,4,D,n,3,4,D,n,3,4,D,n,2,4,E,n,3,4,G,n,3,4,G,n,2,4,E,n,3,4,D,n,3,4,C,n,3,4,D,n,3,4,E,n,3,4,E,n,3,4,E,n,3,4,E,n,3,4,D,n,3,4,D,n,3,4,E,n,3,4,D,n,3,4,C,n,1,4";
    
    //Megalovania 120BPM
-   //music_input = "Dn54Dn54Dn45An44Rn54G#54Rn54Gn54Rn54Fn54Fn54Dn54Fn54Gn54 Cn54Cn54Dn45An44Rn54G#54Rn54Gn54Rn54Fn54Fn54Dn54Fn54Gn54 Bn54Bn54Dn45An44Rn54G#54Rn54Gn54Rn54Fn54Fn54Dn54Fn54Gn54 A#54A#54Dn45An44Rn54G#54Rn54Gn54Rn54Fn54Fn54Dn54Fn54Gn54"; 
+   music_input = "Rn14Rn14Dn54Dn54Dn45An44Rn54G#54Rn54Gn54Rn54Fn54Fn54Dn54Fn54Gn54 Cn54Cn54Dn45An44Rn54G#54Rn54Gn54Rn54Fn54Fn54Dn54Fn54Gn54 Bn54Bn54Dn45An44Rn54G#54Rn54Gn54Rn54Fn54Fn54Dn54Fn54Gn54 A#54A#54Dn45An44Rn54G#54Rn54Gn54Rn54Fn54Fn54Dn54Fn54Gn54"; 
    
    //Had to do it to em:
    //music_input = "Dn24En24Cn34 En24Fn24Cn55Bn54An44 Cn24Bn24An24 Rn34Cn54Cn54Dn54En44Fn54 Cn34Bn24An34 En34Fn34Cn55Bn54An44 Dn34En34Cn34 En44Fn44Fn34Rn34Fn54Fn44Fn54 Rn34Dn44En44Fn44Fn44Gn44En44 Dn54Cn24Rn35 Rn44Dn44Dn44En44Fn44Dn34Cn44 Cn45Rn44Cn45Gn24";
+   
+   //For testing INCORRECT note handling:
+   //music_input = "Rn14Rn14Cn14An14B#14";
    
    //----------------------------------------------
    
