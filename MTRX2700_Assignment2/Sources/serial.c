@@ -12,7 +12,8 @@ char write_buffer[256];
 //flag for latching a full command - get_new_command()
 int string_ready = 0;
 
-
+//maximum counter for stopping the buffers from overwriting
+int max_buffer_counter = 255;
 
 //Initialising a given serial port struct
 void SerialInitialise(int baud_rate, SerialPort *serial_port) {
@@ -100,6 +101,9 @@ void SCI_read_char(SerialPort *serial_port, char buffer[], char end_read_indicat
  char read_char;
  volatile char reset;    //must be volatile so 'pointless' status register reading isnt skipped by compiler
  
+ 
+ 
+ 
  //to reset RDRF flag once read from, status register needs to first be read
  reset = *(serial_port->status_register);
  
@@ -107,15 +111,12 @@ void SCI_read_char(SerialPort *serial_port, char buffer[], char end_read_indicat
  read_char = *(serial_port->data_register);
  
  
- //--RDRF now 0--//
- 
- 
  //Storing in buffer
  buffer[index] = read_char;
  
  
  //LAST CHARACTER:
- if (read_char == end_read_indicator){
+ if ((read_char == end_read_indicator) || (index == (max_buffer_counter-1))){
   
   //add null terminator to the position after the read end char:
   buffer[index+1] = '\0';
@@ -174,12 +175,20 @@ void print_to_serial(SerialPort *serial_port, char *string_to_print){
     bit and 'kickstarts' the process of writing out the string char by char
     via interrupts from the TDRE bit and the SCI_write_char() function.
   */
-
+  
+  
+   if(strlen(string_to_print) >= max_buffer_counter){
+   
+     return;        // If string is to long, then return without activating interrupt
+    
+  }
+  
   //check if TIE is set (waiting for a previous string to be full written before begining new write process)
   while (128 == (*(serial_port->control_register_2) & SCI0CR2_SCTIE_MASK)){
   }
    
   //copy string literal 'string_to_print' into writebuffer
+
   strcpy(write_buffer, string_to_print);
   
   //enable TIE interrupts - this will begin the char by char writing
@@ -200,6 +209,7 @@ void SCI_write_char(SerialPort *serial_port, char buffer[], char end_write_indic
   //static index to keep track of position in buffer to write from
   static write_index = 0;
   
+ 
   
   //if terminating char found, do not write, and disable TIE
   if (end_write_indicator == buffer[write_index]){
